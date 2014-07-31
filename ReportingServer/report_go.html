@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+
+    <!--<script src='resources/jquery-ui/js/jquery-1.10.2.js'></script>
+    <script type='text/javascript' src='resources/jquery-ui/js/jquery-ui-1.10.4.custom.min.js'></script>
+    <script src='resources/jquery-ui/development-bundle/ui/jquery.ui.checkbox.js'></script>
+    <script src='resources/jquery-ui/development-bundle/ui/jquery.ui.button.js'></script>
+
+    <link type='text/css' href='resources/css/basic.css' rel='stylesheet' />
+    <link type='text/css' href='resources/css/redmond/jquery-ui-1.9.2.custom.css' rel='stylesheet' />
+
+    <link rel='stylesheet' href='resources/jquery-ui/development-bundle/themes/redmond/jquery.ui.all.css'>-->
+
+
+</head>
+
+<body>
+    <br />
+    <table width='100%' style='padding-left:30px;'>
+        <tr>
+            <td style='margin-right:30px;'>
+                <button id='viewRep' class='viewRep'>View Report</button>
+            </td>
+            <td>
+                <label>
+                    <input type='checkbox' id='latest' name='latest' value='latest' />Get Latest Data</label>
+            </td>
+        </tr>
+        <tr>
+            <td colspan='2'>
+                <i><label style='padding-left:12px;'>Last Updated on: June 27th 11:00:00 PM</label></i>
+            </td>
+        </tr>
+    </table>
+
+    <script type='text/javascript'>
+        $(function () {
+            $('#viewRep').button();
+        });
+
+        /* /Report_Activity/{badgeID}/{personID}/{companyID}/{divisionID}/{empID}/{status}/{areaString}/{stDate}/{stTime}/{endDate}/{endTime}/}{days}/{months} 
+    $(document).on('click', '.viewRep', function(){
+
+        var report = $('#selectReport').val();
+        report = (report == '-2') ? 'null' : report;
+
+        var badge = $('#badge').attr('id');
+        badge = '-2' ? 'null' : badge;
+
+        var name = $('#name').attr('id');
+        name = '-2' ? 'null' : name;
+
+        var company = $('#company').attr('id');
+        company = '-2' ? 'null' : company;
+
+        var division = $('#division').attr('id');
+        division = '-2' ? 'null' : division;
+
+        //var empid = $('#empid').attr('id');
+        //empid = '-2' ? 'null' : empid;
+
+        var facility = $('#facility').attr('id');
+        facility = '-2' ? 'null' : facility;
+
+        var area = $('#area').attr('id');
+        area = '-2' ? 'null' : area;
+
+        var category = $('#category').attr('id');
+        category = '-2' ? 'null' : category;
+
+        var reader = 'null';
+
+        var stDate = $('#fromDate').datetimepicker().val()
+        stDate = 'null';
+
+        var stTime = 'null';
+
+        var endDate = 'null';
+
+        var endTime = 'null';
+
+        var days = 'null';
+
+        var months = 'null';
+
+        var areaString = facility + ',' + area + ',' + category + ',' + reader;
+
+        var url = ROOTURL + report + '/' + badge + '/' + name + '/' + company + '/' + division + '/' + 'null' + '/' + status + '/' + areaString + '/' + stDate + '/' + stTime + '/' + endDate + '/' + endTime + '/' + days + '/' + months;
+        jQuery('#list').jqGrid().setGridParam({url : url}).trigger('reloadGrid');
+    });
+*/
+    </script>
+
+
+
+
+
+</body>
+
+</html>

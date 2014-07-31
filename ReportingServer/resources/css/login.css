@@ -1,0 +1,33 @@
+fieldset {
+	border: none;
+}
+
+label {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+fieldset>input {
+	margin-left: 50px;
+}
+
+#login-form {
+	width: 400px;
+	height: 200px;
+	float: left;
+	margin-left: 40%;
+	margin-top: 5%;
+}
+
+#username {
+	border-radius: 5px;
+}
+
+#password {
+	border-radius: 5px;
+}
+
+.centerButton {
+	margin-top: 10px;
+	text-align: center
+}

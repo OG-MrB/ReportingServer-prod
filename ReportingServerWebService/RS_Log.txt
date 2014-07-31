@@ -1,0 +1,40 @@
+INFO :: 
+ AT ReportingServerWebService.Models.Facility :: getAllFacilityList 
+ Entry Point
+DEBUG :: 
+ AT ReportingServerWebService.Models.Facility :: getAllFacilityList 
+ Input parameters - 
+EXCEPTION ::  07/15/2014 15:15:25
+ AT ReportingServerWebService.Models.Facility :: getAllFacilityList - 0
+ EXception Message ::  A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: SQL Network Interfaces, error: 26 - Error Locating Server/Instance Specified)
+DEBUG :: 
+ AT ReportingServerWebService.Models.Facility :: getAllFacilityList 
+ Input parameters - Exit Point
+EXCEPTION ::  07/17/2014 14:53:33
+ AT ReportingServerWebService.Models.Reader :: getReadersByFacilityList - 0
+ EXception Message ::  There is already an open DataReader associated with this Command which must be closed first.
+EXCEPTION ::  07/17/2014 14:55:34
+ AT ReportingServerWebService.Models.Reader :: getReadersByFacilityList - 0
+ EXception Message ::  There is already an open DataReader associated with this Command which must be closed first.
+EXCEPTION ::  07/17/2014 14:55:44
+ AT ReportingServerWebService.Models.Reader :: getReadersByFacilityList - 0
+ EXception Message ::  There is already an open DataReader associated with this Command which must be closed first.
+EXCEPTION ::  07/21/2014 14:39:54
+ AT ReportingServerWebService.Models.Name :: getNamesByCompanyList - 0
+ EXception Message ::  Conversion failed when converting the nvarchar value 'null' to data type int.
+EXCEPTION ::  07/21/2014 14:51:43
+ AT ReportingServerWebService.Models.Person :: getAllPersonList - 0
+ EXception Message ::  Column 'person.id' is invalid in the select list because it is not contained in either an aggregate function or the GROUP BY clause.
+EXCEPTION ::  07/21/2014 14:53:14
+ AT ReportingServerWebService.Models.Person :: getAllPersonList - 0
+ EXception Message ::  Incorrect syntax near 'group'.
+EXCEPTION ::  07/21/2014 14:54:58
+ AT ReportingServerWebService.Models.Person :: getEmpByCompanyList - 0
+ EXception Message ::  Incorrect syntax near the keyword 'where'.
+EXCEPTION ::  07/21/2014 18:09:30
+ AT ReportingServerWebService.Models.Report_Activity :: getDataByFilter - 0
+ EXception Message ::  The multi-part identifier "dbo.badge.bid" could not be bound.
+EXCEPTION ::  07/21/2014 18:21:57
+ AT ReportingServerWebService.Models.Reader :: getReadersByFacilityList - 0
+ EXception Message ::  Value cannot be null.
+Parameter name: dataReader

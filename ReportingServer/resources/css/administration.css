@@ -1,0 +1,22 @@
+
+h2.no-margin-padding {
+	margin: 0; 
+	padding: 0;
+
+	}
+	
+textarea.box{
+	resize: none; width: 100%; border-radius: .7em;
+}
+
+
+textarea.box_save{
+	resize: none; border-radius: .7em;width: 80%;
+	
+}
+
+.save_note{
+	position:absolute;
+	margin-top:10px;
+	margin-left:10px;
+}

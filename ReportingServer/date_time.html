@@ -1,0 +1,262 @@
+﻿<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta http-equiv='content-type' content='text/html; charset=utf-8' />
+
+</head>
+
+<body>
+
+<br/>
+
+    <div id='range' style='width:100%; position:absolute;'>
+
+        <fieldset id='from' style='float:left;'>
+        <legend>From</legend>
+        Date:
+                <input type='text' id='fromdate' style='width:135px' />
+        Time:
+                <input type='text' id='fromtime' style='width:78px' />
+        </fieldset>
+        <fieldset id='to' style='float:left;'>
+        <legend>To</legend>
+        Date:
+                <input type='text' id='todate' style='width:135px' />
+        Time:
+                <input type='text' id='totime' style='width:78px' />
+ 
+        </fieldset>
+
+        <img class='viewRep-disabled viewR' width='20px' height='20px' style='float:left; margin:0px; margin-top:12px; margin-left:5px;' src='resources/images/Go_Icon_Disabled.png' onclick="false" />
+  
+     
+    </div>
+    <br />
+    <br />
+    <br />
+      <br />
+      <br />
+
+
+    <fieldset id='monthField'>
+        <legend>Month of The Year</legend>
+        <div>
+            <table width='100%'>
+
+                <tr>
+                    <td>
+                        <label>
+                            <input type='checkbox' name='allMonths' class='month' value='allMonths' onclick='toggleMonth(this)' checked />All</label>
+                    </td>
+
+                    <td>
+                        <label>
+                            <input type='checkbox' name='monthCheckBox' class='month' value='1' onclick='toggleAllMonth(this)' checked/>January</label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type='checkbox' name='monthCheckBox' class='month' value='3' onclick='toggleAllMonth(this)' checked />March</label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type='checkbox' name='monthCheckBox' class='month' value='5' onclick='toggleAllMonth(this)' checked />May</label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type='checkbox' name='monthCheckBox' class='month' value='7' onclick='toggleAllMonth(this)' checked />July</label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type='checkbox' name='monthCheckBox' class='month' value='9' onclick='toggleAllMonth(this)' checked />September</label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type='checkbox' name='monthCheckBox' class='month' value='11' onclick='toggleAllMonth(this)' checked />November</label>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td></td>
+                    <td>
+                        <label>
+                            <input type='checkbox' name='monthCheckBox' class='month' value='2' onclick='toggleAllMonth(this)' checked />February</label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type='checkbox' name='monthCheckBox' class='month' value='4' onclick='toggleAllMonth(this)' checked />April</label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type='checkbox' name='monthCheckBox' class='month' value='6' onclick='toggleAllMonth(this)' checked />June</label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type='checkbox' name='monthCheckBox' class='month' value='8' onclick='toggleAllMonth(this)' checked />August</label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type='checkbox' name='monthCheckBox' class='month' value='10' onclick='toggleAllMonth(this)' checked />October</label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type='checkbox' name='monthCheckBox' class='month' value='12' onclick='toggleAllMonth(this)' checked />December</label>
+                    </td>
+                </tr>
+
+
+            </table>
+        </div>
+    </fieldset>
+    <br />
+
+
+
+    <fieldset id='dayField'>
+        <legend>Day of the Week</legend>
+        <div>
+            <table width='100%'>
+                <tr>
+                    <td>
+                        <label>
+                            <input type='checkbox' name='allDays' class='day' value='allDays' onclick='toggleDay(this)' checked />All</label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type='checkbox' name='day' class='day' value='monday' onclick='toggleAllDay(this)' checked />Monday</label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type='checkbox' name='day' class='day' value='tuesday' onclick='toggleAllDay(this)' checked />Tuesday</label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type='checkbox' name='day' class='day' value='wednesday' onclick='toggleAllDay(this)' checked />Wednesday</label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type='checkbox' name='day' class='day' value='thursday' onclick='toggleAllDay(this)' checked />Thursday</label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type='checkbox' name='day' class='day' value='friday' onclick='toggleAllDay(this)' checked />Friday</label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type='checkbox' name='day' class='day' value='saturday' onclick='toggleAllDay(this)' checked />Saturday</label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type='checkbox' name='day' class='day' value='sunday' onclick='toggleAllDay(this)' checked />Sunday</label>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </fieldset>
+
+    </form>
+    <script type='text/javascript'>
+
+    $('#fromdate').prop('disabled',true);
+    $('#fromtime').prop('disabled',true);
+    $('#todate').prop('disabled',true);
+    $('#totime').prop('disabled',true);
+    $('.day').prop('disabled', true);
+    $('.month').prop('disabled', true);
+
+
+        $('#fromtime').datetimepicker({
+            format: 'g:i A',
+            formatTime: 'h:i A',
+            step: 30,
+            datepicker: false
+        });
+
+        $('#totime').datetimepicker({
+            format: 'g:i A',
+            formatTime: 'h:i A',
+            step: 30,
+            datepicker: false,
+            onShow: function (ct) {
+
+            }
+        });
+
+        $('#fromdate').datetimepicker({
+            format: 'M-d-Y',
+
+            onShow: function (ct) {
+                this.setOptions({
+                    formatDate: 'M-d-Y',
+                    maxDate: $('#todate').val() ? $('#todate').val() : false
+                })
+            },
+            timepicker: false
+        });
+
+        $('#todate').datetimepicker({
+            format: 'M-d-Y',
+
+            onShow: function (ct) {
+                this.setOptions({
+                    formatDate: 'M-d-Y',
+                    minDate: $('#fromdate').val() ? $('#fromdate').val() : false
+                })
+            },
+            timepicker: false
+        });
+
+        function toggleAllDay(source) {
+            checkboxes = document.getElementsByName('day');
+            var toggleAllDay = document.getElementsByName('allDays')[0];
+            var allSelected = true;
+            for (var i = 0, n = checkboxes.length; i < n; i++) {
+                if (checkboxes[i].checked) {
+                    continue;
+                } else {
+
+                    toggleAllDay.checked = false;
+                    allSelected = false;
+                    break;
+                }
+            }
+            toggleAllDay.checked = allSelected;
+        };
+
+        function toggleAllMonth(source) {
+            checkboxes = document.getElementsByName('monthCheckBox');
+            var toggleAllMonth = document.getElementsByName('allMonths')[0];
+            var allSelected = true;
+            for (var i = 0, n = checkboxes.length; i < n; i++) {
+                if (checkboxes[i].checked) {
+                    continue;
+                } else {
+
+                    toggleAllMonth.checked = false;
+                    allSelected = false;
+                    break;
+                }
+            }
+            toggleAllMonth.checked = allSelected;
+        };
+
+        function toggleDay(source) {
+            checkboxes = document.getElementsByName('day');
+            for (var i = 0, n = checkboxes.length; i < n; i++) {
+                checkboxes[i].checked = source.checked;
+            }
+        };
+
+        function toggleMonth(source) {
+            checkboxes = document.getElementsByName('monthCheckBox');
+            for (var i = 0, n = checkboxes.length; i < n; i++) {
+                checkboxes[i].checked = source.checked;
+            }
+        };
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,439 @@
+﻿<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN' 'http://www.w3.org/TR/html4/strict.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml' lang='en'>
+
+<head id='mainHead'>
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+    <title>Reporting Server</title>
+
+
+
+    <link href='resources/css/gadget_panel.css' rel='stylesheet' type='text/css' />
+    <link href='resources/css/gadget_container.css' rel='stylesheet' type='text/css' />
+
+    <link href='resources/css/redmond/jquery.ui.all.css' rel='stylesheet' type='text/css' />
+
+    <link rel='stylesheet' type='text/css' href='scripts/jquery.datetimepicker.css' />
+    <link rel='stylesheet' type='text/css' media='screen' href='resources/jqgrid/css/ui.jqgrid.css' />
+
+    <!-- General JQuery Scripts -->
+    <script src='resources/jquery-ui/js/jquery-1.10.2.js'></script>
+    <script type='text/javascript' src='resources/jquery-ui/js/jquery-ui-1.10.4.custom.min.js'></script>
+
+    <script src='resources/jquery-ui/development-bundle/ui/jquery.ui.core.js'></script>
+    <script src='resources/jquery-ui/development-bundle/ui/jquery.ui.widget.js'></script>
+    <script src='resources/jquery-ui/development-bundle/ui/jquery.ui.position.js'></script>
+    <script src='resources/jquery-ui/development-bundle/ui/jquery.ui.menu.js'></script>
+    <script src='resources/jquery-ui/development-bundle/ui/jquery.ui.autocomplete.js'></script>
+    <script src='resources/jquery-ui/development-bundle/ui/jquery.ui.checkbox.js'></script>
+
+    <!-- Gadget Framework -->
+    <script type='text/javascript' src='resources/js/gadget_container.js'></script>
+    <script type='text/javascript' src='resources/js/gadget_holder.js'></script>
+    <script type='text/javascript' src='resources/js/gadget_util.js'></script>
+    <script type='text/javascript' src='resources/js/gadget.js'></script>
+    <script type='text/javascript' src='resources/js/logutil.js'></script>
+
+    <!-- Typeahead Bundle -->
+    <script type='text/javascript' src='resources/typeahead/old/typeahead.bundle.js'></script>
+
+    <script src='resources/jquery-ui/development-bundle/ui/jquery.ui.button.js'></script>
+    <script type='text/javascript' src='scripts/jquery.datetimepicker.js'></script>
+    <script type='text/javascript' src='resources/js/lib/jquery/jquery.ui.selectmenu.js'></script>
+
+
+
+    <!-- ReportView.html -->
+    <script src='resources/jqgrid/js/jquery.jqGrid.min.js' type='text/javascript'></script>
+    <script src='resources/jqgrid/js/i18n/grid.locale-en.js' type='text/javascript'></script>
+
+    <style>
+        html {
+            background-image: url('resources/images/bg_plane_big.jpg');
+        }
+        body {
+            font: 70% arial, helvetica, sans-serif;
+            margin: 10px;
+        }
+        button[disabled] {
+            opacity: 0.5;
+        }
+        h2.header {
+            font-family: 'Whitney SSm A', 'Whitney SSm B', 'ff-meta-web-pro', sans-serif;
+            font-size: 23px;
+            color: white;
+            /**#274E9B;**/
+            text-shadow: 1px 1px 3px #008FFF;
+            float: left;
+            margin-left:10px; margin-top:14px;
+        }
+        .loginHeader {
+            margin-right: 18px;
+            padding-top: 0px;
+            color: white;
+            float: right;
+        }
+        .copyrightLabel {
+            color: #FFF;
+            font-size: 10px;
+            float: left;
+            margin-left: 10px;
+            margin-top:12px;
+        }
+        .viewRep, .addCb {
+            cursor: pointer;
+        }
+
+        .param input, .tt-query,
+.tt-hint {
+    width: 145px;
+    font-size: 12px;
+    border: 2px solid #ccc;
+    border-radius: 2px;
+    outline: none;
+}
+
+.param input:disabled, input:disabled {
+    background-color: rgb(235, 235, 228);
+}
+
+.param input, input {
+    background-color: rgb(255, 255, 255);
+}
+
+.tt-query {
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+    color: #999;
+}
+
+.tt-dropdown-menu {
+    width: 148px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.reportDiv > .twitter-typeahead > .tt-dropdown-menu {
+    width: 133px;
+}
+.companyDiv > .twitter-typeahead > .tt-dropdown-menu {
+    width: 225px;
+}
+.divisionDiv > .twitter-typeahead > .tt-dropdown-menu {
+    width: 225px;
+}
+.nameDiv > .twitter-typeahead > .tt-dropdown-menu {
+    width: 165px;
+}
+.badgeDiv > .twitter-typeahead > .tt-dropdown-menu {
+    width: 149px;
+}
+.wildCardIdDiv > .twitter-typeahead > .tt-dropdown-menu {
+    width: 149px;
+}
+.wildCardTextDiv > .twitter-typeahead > .tt-dropdown-menu {
+    width: 149px;
+}
+.facilityDiv > .twitter-typeahead > .tt-dropdown-menu {
+    width: 225px;
+}
+.areaDiv > .twitter-typeahead > .tt-dropdown-menu {
+    width: 225px;
+}
+.categoryDiv > .twitter-typeahead > .tt-dropdown-menu {
+    width: 225px;
+}
+.readerDiv > .twitter-typeahead > .tt-dropdown-menu {
+    width: 149px;
+}
+.miscDiv1 > .twitter-typeahead > .tt-dropdown-menu {
+    width: 296px;
+}
+.miscDiv2 > .twitter-typeahead > .tt-dropdown-menu {
+    width: 296px;
+}
+
+.tt-suggestion {
+    padding: 3px 3px 3px 3px;
+    font-size: 12px;
+}
+
+.tt-suggestion.tt-cursor { /* UPDATE: newer versions use .tt-suggestion.tt-cursor */
+    color: #fff;
+    background-color: #0097cf;
+
+}
+
+.tt-suggestion p {
+    margin: 0;
+}
+
+.param {
+    float: left;
+    margin-left: 5px;
+}
+
+.clearable{
+  background:url('resources/report_images/x.png') no-repeat right -10px center;
+  border:1px solid #999;
+  padding:2px 18px 2px 2px; /* USE the same right padding in jQ! */
+  border-radius:3px;
+  transition: background 0.4s; /*Remove this line if issues in Chrome (02.2014)*/
+}
+/* (jQ addClass:) if input has value: */
+.clearable.x{
+  background-position: right 5px center;
+}
+/* (jQ addClass:) if mouse is over the 'x' input area*/
+.clearable.onX{
+  cursor:pointer;
+}
+
+#top {
+    top:0;
+    left:0;
+    padding-left: 20px;
+    height:50px;
+}
+
+    </style>
+</head>
+
+<body>
+
+    <div id='top'>
+
+
+        <img src = 'resources/report_images/lawa_logo.jpg' style='float:left;height:58.5px; width:175px;' />
+        <h2 class='header'>
+        
+        Reporting Server
+        </h2>
+
+        <!--<div id='headerlogin' class='loginHeader'>
+
+            <span id='user-name-login' style='margin:10px'>Logged in as admin</span>
+
+            <a href='' id='logout' class='mybutton'>Home</a>
+            <a href='' id='logout' class='mybutton'>Sign Out</a>
+
+
+        </div> -->
+        <br />
+        <p class='copyrightLabel'>
+
+            <b>© 2014 Birdi &amp; Associates, Inc.</b>
+        </p>
+
+
+    </div>
+
+    <div id='gadgetContainer' style='padding-left:10px; margin-top:10px'>Loading Gadget Framework...</div>
+
+    <script>
+    
+        //var ROOTURL = 'http://192.168.0.16:5666/RS_API/api/';
+        var ROOTURL = "http://10.65.216.71:5666/RS_API/api/";
+
+        var gadgetContainer = new GadgetContainer();
+
+        $(document).ready(function () {
+
+            $('.mybutton').button();
+
+            jQuery.logInfo('Loading gadget settings');
+
+            var gadgetPrefs = {
+                'APP_NAME': 'Reporting Server',
+                'APP_CONFIGS': [{
+                    'CONFIG_NAME': 'COLUMNS',
+                    'CONFIG_VALUE': '2'
+                }, {
+                    'CONFIG_NAME': 'HEADER',
+                    'CONFIG_VALUE': ''
+                }, {
+                    'CONFIG_NAME': 'HEADER_URI',
+                    'CONFIG_VALUE': ''
+                }, {
+                    'CONFIG_NAME': 'CUSTOM_CSS',
+                    'CONFIG_VALUE': ''
+                }, {
+                    'CONFIG_NAME': 'HORIZ_COL',
+                    'CONFIG_VALUE': ''
+                }, {
+                    'CONFIG_NAME': 'COL_WIDTHS',
+                    'CONFIG_VALUE': ['63%', '35%']
+                }, {
+                    'CONFIG_NAME': 'ROW_HEIGHTS',
+                    'CONFIG_VALUE': [
+                        ['60px', '600px'],
+                        ['60px', '305px', '240px']
+                    ]
+                }],
+                'GADGETS': [
+
+
+                    {
+                        'GADGET_ID': 'G_Reports',
+                        'GADGET_NAME': 'Reports',
+                        'TYPE': 'script',
+                        'STYLE_CLASS_NAME': 'color-my',
+                        'VIEW_RENDERER_URI': 'gadget_reports.js',
+                        'CLASS_NAME': 'Gadget_Reports',
+                        'SERVICE_URI': '',
+                        'COL_VAL': '1',
+                        'ROW_VAL': '1',
+                        'GADGET_WIDTH': '14%',
+                        'DISPLAY_HEADER': true,
+                        'CONFIGS': [{
+                            'CONFIG_TYPE': '',
+                            'CONFIG_NAME': 'editable',
+                            'CONFIG_VALUE': false
+                        }, {
+                            'CONFIG_TYPE': '',
+                            'CONFIG_NAME': '',
+                            'CONFIG_VALUE': ''
+                        }]
+                    },
+
+                    {
+                        'GADGET_ID': 'G_Notifications',
+                        'GADGET_NAME': 'Employee',
+                        'TYPE': 'script',
+                        'STYLE_CLASS_NAME': 'color-my',
+                        'VIEW_RENDERER_URI': 'gadget_per_company.js',
+                        'CLASS_NAME': 'Gadget_Filter',
+                        'SERVICE_URI': '',
+                        'COL_VAL': '1',
+                        'ROW_VAL': '1',
+                        'GADGET_WIDTH': '83%',
+                        'DISPLAY_HEADER': true,
+                        'CONFIGS': [{
+                            'CONFIG_TYPE': '',
+                            'CONFIG_NAME': 'editable',
+                            'CONFIG_VALUE': false
+                        }, {
+                            'CONFIG_TYPE': '',
+                            'CONFIG_NAME': '',
+                            'CONFIG_VALUE': ''
+                        }]
+                    },
+
+                    {
+                        'GADGET_ID': 'G_Filter',
+                        'GADGET_NAME': 'Portal',
+                        'TYPE': 'script',
+                        'STYLE_CLASS_NAME': 'color-my',
+                        'VIEW_RENDERER_URI': 'gadget_facility.js',
+                        'CLASS_NAME': 'Gadget_Facility',
+                        'SERVICE_URI': '',
+                        'COL_VAL': '2',
+                        'ROW_VAL': '2',
+                        'GADGET_WIDTH': '99%',
+                        'DISPLAY_HEADER': true,
+                        'CONFIGS': [{
+                            'CONFIG_TYPE': '',
+                            'CONFIG_NAME': 'editable',
+                            'CONFIG_VALUE': false
+                        }, {
+                            'CONFIG_TYPE': '',
+                            'CONFIG_NAME': '',
+                            'CONFIG_VALUE': ''
+                        }]
+                    },
+
+                    {
+                        'GADGET_ID': 'G_Alerts',
+                        'GADGET_NAME': 'Report Data',
+                        'TYPE': 'script',
+                        'STYLE_CLASS_NAME': 'color-my',
+                        'VIEW_RENDERER_URI': 'gadget_data.js',
+                        'CLASS_NAME': 'Gadget_Data',
+                        'SERVICE_URI': '',
+                        'COL_VAL': '1',
+                        'ROW_VAL': '2',
+                        'GADGET_WIDTH': '98.5%',
+                        'DISPLAY_HEADER': true,
+                        'CONFIGS': [{
+                            'CONFIG_TYPE': '',
+                            'CONFIG_NAME': 'editable',
+                            'CONFIG_VALUE': false
+                        }, {
+                            'CONFIG_TYPE': '',
+                            'CONFIG_NAME': '',
+                            'CONFIG_VALUE': ''
+                        }]
+                    },
+
+                    {
+                        'GADGET_ID': 'G_Graphs',
+                        'GADGET_NAME': 'Date & Time',
+                        'TYPE': 'script',
+                        'STYLE_CLASS_NAME': 'color-my',
+                        'VIEW_RENDERER_URI': 'gadget_datetime.js',
+                        'CLASS_NAME': 'Gadget_DateTime',
+                        'SERVICE_URI': '',
+                        'COL_VAL': '2',
+                        'ROW_VAL': '3',
+                        'GADGET_WIDTH': '99%',
+                        'DISPLAY_HEADER': true,
+                        'CONFIGS': [{
+                            'CONFIG_TYPE': '',
+                            'CONFIG_NAME': 'editable',
+                            'CONFIG_VALUE': false
+                        }, {
+                            'CONFIG_TYPE': '',
+                            'CONFIG_NAME': '',
+                            'CONFIG_VALUE': ''
+                        }]
+                    },
+
+                    {
+                        'GADGET_ID': 'G_SystemHealth',
+                        'GADGET_NAME': 'Miscellaneous',
+                        'TYPE': 'script',
+                        'STYLE_CLASS_NAME': 'color-my',
+                        'VIEW_RENDERER_URI': 'gadget_alarms.js',
+                        'CLASS_NAME': 'Gadget_Alerts',
+                        'SERVICE_URI': '',
+                        'COL_VAL': '2',
+                        'ROW_VAL': '1',
+                        'GADGET_WIDTH': '99%',
+                        'DISPLAY_HEADER': true,
+                        'CONFIGS': [{
+                            'CONFIG_TYPE': '',
+                            'CONFIG_NAME': 'editable',
+                            'CONFIG_VALUE': false
+                        }, {
+                            'CONFIG_TYPE': '',
+                            'CONFIG_NAME': '',
+                            'CONFIG_VALUE': ''
+                        }]
+                    },
+                ]
+            };
+
+            retrieveSettingsAndRenderLayout(gadgetPrefs);
+
+            $.getScript('resources/js/json_parse.js', function () {
+                //alert('Loaded js!');
+            });
+
+
+        });
+
+        function parentScript() {
+            alert('invoked parent script');
+        }
+    </script>
+
+    
+    <script type='text/javascript' src='resources/params-controller.js'></script>
+    <script type='text/javascript' src='scripts/jqGridExportToExcel.js'></script>
+</body>
+
+</html>

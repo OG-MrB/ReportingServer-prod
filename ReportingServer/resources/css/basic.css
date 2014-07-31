@@ -1,0 +1,285 @@
+body{ font: 62.5% arial, helvetica, sans-serif; margin: 10px;}
+
+
+html {
+	overflow-y: hidden;
+}
+
+button[disabled]{
+	opacity: 0.5;
+}
+
+@font-face 
+{
+        font-family: DESTROY;
+        src: url('../fonts/DESTROY_.ttf');
+}	
+@font-face
+{
+	font-family: MegaLop;
+	src: url('../fonts/MEgalopolisExtra.otf');
+}
+
+html {
+	background-image: url('../images/bg_plane_big.jpg');
+}
+
+h2.header {
+	font-family: 'Whitney SSm A', 'Whitney SSm B', "ff-meta-web-pro", sans-serif;
+	font-size: 23px;
+	color: white;/**#274E9B;**/
+	text-shadow: 1px 1px 3px #008FFF;
+	float:left;	
+}
+
+.loginHeader {
+	margin-right: 18px;
+	padding-top: 20px; 
+	color: white; 
+	float:right;
+}
+.copyrightLabel{
+	color:white;
+	font-size:10px;
+	float: left;
+}
+
+ 
+
+div.pagePart {
+	border: 4px solid #274E9B;
+	padding-right: 5px;
+	background-color: white;
+	overflow: auto;
+	
+	-moz-border-radius: 15px; 
+	-webkit-border-radius: 15px; 
+	-khtml-border-radius: 15px; 
+	border-radius: 15px;
+	
+	-webkit-box-shadow: 5px 5px 5px black;
+	-moz-box-shadow: 10px 5px 5px black;
+	-webkit-box-shadow: 10px 5px 5px black;
+	-khtml-box-shadow: 5px 5px 5px black;
+	box-shadow: 5px 5px 5px black;
+	
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+
+/* IE hack for drop shadow */
+@media screen and (min-width:0\0) {
+		.pagePart {
+			box-shadow: 10px 10px 100px black;
+		}
+}
+
+h1.header {
+	height:24px;
+	padding-left: 8px;
+	padding-top: 3px; 
+	vertical-align: middle;
+	margin-left: 4px;
+	margin-top: 5px !important;
+	font: 15px MegaLop;
+	border: 1px solid #4297d7;
+	color: white;
+	background: url(../images/ui-bg_gloss-wave_55_5c9ccc_500x100.png) 50% 50% repeat-x;
+	-moz-border-radius: 5px; 
+	-webkit-border-radius: 5px; 
+	-khtml-border-radius: 5px; 
+	border-radius: 5px;
+}
+	
+.dialogOverride {
+	border: 4px solid #274E9B !important;
+	-moz-border-radius: 15px !important;
+	-webkit-border-radius: 15px !important;
+	-khtml-border-radius: 15px !important;
+	border-radius: 15px !important;	
+}
+
+.dialogTitleOverride {
+	height:20px;
+	vertical-align: middle;
+	padding: 10px;
+	margin: 5px;
+	font: 15px MegaLop;
+}
+
+#table_bgcheck thead {
+	display:none;
+}
+
+#table_bgcheck tbody tr td {
+	border: none;
+	padding:5px;
+	}
+
+#table_bgcheck {
+	border:none;
+}
+
+#table_results thead{
+	padding:0;
+	margin:0;
+}
+
+
+img:hover {
+	-moz-transform: scale(1.1);
+	-khtml-transform: scale(1.1);
+	-webkit-transform: scale(1.1);
+	transform: scale(1.1);
+}
+
+table tr td {
+	cursor: default;
+}
+
+#filter-favorites:hover {
+	cursor: pointer;
+}
+#filter-flags-blue:hover {
+	cursor: pointer;
+}
+#filter-flags-red:hover {
+	cursor: pointer;
+}
+#filter-flags-yellow:hover {
+	cursor: pointer;
+}
+
+.charButtons {
+	width: 100px;
+}
+
+/* This is a flot class in jquery.flot.pie.js */
+.pieLabelBackground {
+	-moz-border-radius: 10px !important;
+	-webkit-border-radius: 10px !important;
+	-khtml-border-radius: 10px !important;
+	border-radius: 10px !important;
+	border: 2px solid white !important;
+}
+
+.pieLabel {
+	padding-left: 2px;
+	padding-top: 2px;
+}
+
+div.graph {
+	width: 310px;
+	height: 180px;
+	float: left;
+}
+
+#bgCheckByStatus {
+	height: 200px;
+	float: left;
+}
+
+#bgCheckAvgResponseTime {
+	height: 200px;
+	float: left;
+}
+
+.piechartLabel:hover {
+	background: rgba(255, 255, 255, 0.5);
+}
+
+#pieChart {
+	margin-left: -65px;
+	margin-top: -10px;
+}
+#columnChart {
+	margin-left: -50px;
+	margin-top: 0px;
+	
+}
+.graph_row_style:hover{
+	font-weight: bold;
+	text-shadow:0px 0px 1px rgb(0,0,0);
+	cursor: pointer;
+	
+}
+.graph_row_style{
+	font-weight: bold;
+	border-style: solid;
+	border-width: 0px 0px 1px 0px;
+	border-collapse:collapse;
+}
+#pieChart>div.legend>table {
+	font-size: 12px;
+	font-weight: bold;
+	margin-left: 50px;
+	margin-top: 15px;
+}
+#columnChart>div.legend>table {
+	font-size: 12px;
+	font-weight: bold;
+	margin-left: 50px;
+	margin-top: 20px;
+}
+.rowSelected>td {
+	background-color: #9FAFD1;
+}
+.scrollStyle
+{
+overflow-x:auto;
+}
+.input_text
+{
+background-color: #eaf1f7;
+  border: 1px solid #ccc;
+  
+}
+.input_normal{
+width: 184px;
+}
+.input_time {
+width: 80px;
+}
+
+
+/* .squaredThree */
+.squaredThree {
+  width: 20px;
+  position: relative;
+  margin: 20px auto;
+  label {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    @include background( linear-gradient(top, #222 0%, #45484d 100%) );
+    @include border-radius( 4px );
+    @include box-shadow( inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,.4) );
+    &:after {
+      content: '';
+      width: 9px;
+      height: 5px;
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      border: 3px solid #fcfff4;
+      border-top: none;
+      border-right: none;
+      background: transparent;
+      @include opacity( 0 );
+      @include transform( rotate(-45deg) );
+    }
+    &:hover::after {
+      @include opacity( 0.3 );
+    }
+  }
+  input[type=checkbox] {
+    visibility: hidden;
+    &:checked + label:after {
+      @include opacity( 1 );
+    }    
+  }
+}
+/* end .squaredThree */

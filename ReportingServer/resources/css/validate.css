@@ -1,0 +1,36 @@
+input.error { border: 1px solid #dd4b39; }
+label.error {
+	background: url('../images/unchecked.gif') no-repeat;
+	padding-left: 20px;
+	color: #dd4b39;
+	position: relative;
+	margin-top: -19px;
+	margin-left: 163px;
+	width: auto;
+}
+label.valid {
+	background: url('../images/checked.gif') no-repeat;
+	display: block;
+	height: 16px;
+	position: relative;
+	margin-top: -20px;
+	margin-left: 163px;
+}
+
+label.validate_loading{
+	background: url('../images/ui-anim_basic_16x16.gif') no-repeat;
+	display: block;
+	width: 16px;
+	height: 16px;
+	position: relative;
+	margin-top: -20px;
+	margin-left: 163px;
+}
+
+label.uploadValidateLoading{
+	background: url('../../resources/images/ui-anim_basic_16x16.gif') no-repeat;
+	display: block;
+	width: 16px;
+	height: 16px;
+	position: relative;
+}
