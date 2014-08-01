@@ -162,7 +162,7 @@ namespace ReportingServerWebService.Models
 
              
                 //Form the base query string
-                query = "SELECT [employee],[first_name],[last_name],[user1],[user2],[BADGE_ID],[cond_desc],[ISSUE_DATETIME],[EXPIRED_DATETIME],[RETURN_DATETIME],DATENAME(dw, [EXPIRED_DATETIME]) AS DAYS FROM  [view_rs_badge_status_report]";
+                query = "SELECT distinct [employee],[first_name],[last_name],[user1],[user2],[BADGE_ID],[cond_desc],[ISSUE_DATETIME],[EXPIRED_DATETIME],[RETURN_DATETIME],DATENAME(dw, [EXPIRED_DATETIME]) AS DAYS FROM  [view_rs_badge_status_report]";
                 
                 //Dynamic query creation
                 if (!stDate.Equals("null"))
@@ -183,9 +183,9 @@ namespace ReportingServerWebService.Models
                 if (!badgeId.Equals("null"))
                 {
                     if (Report_BadgeStatus.isConditionSelected)
-                        query = query + " AND   [view_rs_badge_status_report].BADGE_ID like '" + badgeId + "'";
+                        query = query + " AND   [view_rs_badge_status_report].PHY_BADGE_ID like '" + badgeId + "'";
                     else
-                        query = query + " WHERE   [view_rs_badge_status_report].BADGE_ID like '" + badgeId + "'";
+                        query = query + " WHERE   [view_rs_badge_status_report].PHY_BADGE_ID like '" + badgeId + "'";
                     Report_BadgeStatus.isConditionSelected = true;
                 }
 
@@ -280,11 +280,14 @@ namespace ReportingServerWebService.Models
                          report.LastName = sqlreader.GetSqlValue(2).ToString().Trim();
                          report.Company = sqlreader.GetSqlValue(3).ToString().Trim();
                          report.Division = sqlreader.GetSqlValue(4).ToString().Trim();
-                         report.Badge = sqlreader.GetSqlValue(5).ToString().Trim().Substring(5);
+                         report.Badge = sqlreader.GetSqlValue(5).ToString().Trim();
                          report.BadgeStatus = sqlreader.GetSqlValue(6).ToString().Trim();
                          report.IssueDateTime = sqlreader.GetSqlValue(7).ToString().Trim();
                          report.ExpiredDateTime = sqlreader.GetSqlValue(8).ToString().Trim();
                          report.ReturnDateTime = sqlreader.GetSqlValue(9).ToString().Trim();
+                         if (report.ReturnDateTime.Equals("Null") || report.ReturnDateTime.Equals("null") || report.ReturnDateTime.Equals("NULL"))
+                             report.ReturnDateTime = "N/A";
+
                          report.invalidDay = sqlreader.GetSqlValue(10).ToString().Trim();
                          report.Name = report.FirstName + " " + report.LastName;
 

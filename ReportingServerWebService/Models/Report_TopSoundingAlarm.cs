@@ -136,15 +136,15 @@ namespace ReportingServerWebService.Models
 
                 if (criteria.Equals("input_desc"))
                 {
-                    query = query + " GROUP BY [input_desc]";
+                    query = query + " GROUP BY [input_desc] ORDER BY COUNT(*) desc";
                 }
                 else if (criteria.Equals("alarm_desc"))
                 {
-                    query = query + " GROUP BY [alarm_desc]";
+                    query = query + " GROUP BY [alarm_desc] ORDER BY COUNT(*) desc";
                 }
                 else
                 {
-                    query = query + " GROUP BY [description]";
+                    query = query + " GROUP BY [description] ORDER BY COUNT(*) desc";
                 }
 
 

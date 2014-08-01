@@ -78,7 +78,6 @@
     <Content Include="misc.html" />
     <Content Include="portal.html" />
     <Content Include="ReportView.html" />
-    <Content Include="report_go.html" />
     <Content Include="report_select.html" />
     <Content Include="resources\css\administration.css" />
     <Content Include="resources\css\basic.css" />
@@ -202,6 +201,7 @@
     <Content Include="resources\images\Notes_Button.png" />
     <Content Include="resources\images\Red_Light_Icon.png" />
     <Content Include="resources\images\red_signal.png" />
+    <Content Include="resources\images\refresh.png" />
     <Content Include="resources\images\save_icon.gif" />
     <Content Include="resources\images\SelectedFavorite.png" />
     <Content Include="resources\images\System_notification.png" />
@@ -1053,14 +1053,6 @@
     <Content Include="resources\report_images\lawa.png" />
     <Content Include="resources\report_images\lawa_logo.jpg" />
     <Content Include="resources\report_images\x.png" />
-    <Content Include="resources\typeahead\old\bloodhound.js" />
-    <Content Include="resources\typeahead\old\bloodhound.min.js" />
-    <Content Include="resources\typeahead\old\typeahead.bundle.js" />
-    <Content Include="resources\typeahead\old\typeahead.bundle.min.js" />
-    <Content Include="resources\typeahead\old\typeahead.bundle.new.js" />
-    <Content Include="resources\typeahead\old\typeahead.bundle.old.js" />
-    <Content Include="resources\typeahead\old\typeahead.jquery.js" />
-    <Content Include="resources\typeahead\old\typeahead.jquery.min.js" />
     <Content Include="resources\typeahead\typeahead.bundle.js" />
     <Content Include="scripts\datetimepicker-master\jquery.datetimepicker.css" />
     <Content Include="scripts\datetimepicker-master\jquery.datetimepicker.js" />
@@ -1126,6 +1118,7 @@
     <Content Include="Handlers\ExportGridToExcel.ashx" />
     <Content Include="Handlers\ExportGridToPDF.ashx" />
     <Content Include="Handlers\ExportGridToWord.ashx" />
+    <Content Include="Handlers\PDFpage.ashx" />
     <None Include="Properties\PublishProfiles\ReportingServerUI.pubxml" />
     <None Include="scripts\_references.js" />
     <Content Include="Web.config" />
@@ -1140,6 +1133,9 @@
     </Compile>
     <Compile Include="Handlers\ExportGridToWord.ashx.cs">
       <DependentUpon>ExportGridToWord.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\PDFpage.ashx.cs">
+      <DependentUpon>PDFpage.ashx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -207,7 +207,7 @@ a {color:white;}
 .gadget-head a.refresh  {
     float: right;
     display: inline;
-    background: url(../images/home.gif) no-repeat;
+    background: url(../images/refresh.png) no-repeat;
     width: 16px;
     height: 16px;
     text-indent: -9999em;

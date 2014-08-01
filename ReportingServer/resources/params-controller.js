@@ -82,7 +82,7 @@ function bloodhoundInit(initialApiName, apiName) {
             }
         },
 
-        limit: 6,
+        limit: 10,
 
         remote: {
             url: ROOTURL + apiName + '/%QUERY',
@@ -1336,7 +1336,7 @@ function mapCheckboxDays() {
     for (var i = 0; i < checkboxes.length; i++) {
         if (checkboxes[i].checked) {
             isDaySelected = 1;
-            var intDay = i + 1;
+            var intDay = i;
             days = days + intDay.toString() + ',';
         }
     }
@@ -1487,7 +1487,7 @@ $(document).on('click', '.viewRep', function() {
         criteriaArray += 'Start Time' + ' : ';
         criteriaArray += stTime + '       ';
     }
-    if (endDate != '') {
+    if (endTime != '') {
         criteriaArray += 'End Time' + ' : ';
         criteriaArray += endTime + '       ';
     }
@@ -1543,11 +1543,11 @@ $(document).on('click', '.viewRep', function() {
     if (_report == 'Report_Activity') {
         if (itemCount <= 1) {
             var areaStringTxt = _facility + ',' + _area + ',' + _category + ',' + reader;
-            var url = ROOTURL + _report + '/' + _badge + '/' + _name + '/' + _company + '/' + _division + '/' + 'null' + '/' + _misc1 + '/' + areaStringTxt + '/' + stDate + '/' + stTime + '/' + endDate + '/' + endTime + '/' + days + '/' + months + '/' + _wildCardId + '/' + _wildCardText;
+            var url = ROOTURL + _report + '/' + badge + '/' + _name + '/' + _company + '/' + _division + '/' + 'null' + '/' + _misc1 + '/' + areaStringTxt + '/' + stDate + '/' + stTime + '/' + endDate + '/' + endTime + '/' + days + '/' + months + '/' + _wildCardId + '/' + _wildCardText;
         }
             // Check this ----
         else {
-            var url = ROOTURL + _report + '/' + _badge + '/' + _name + '/' + _company + '/' + _division + '/' + 'null' + '/' + _misc1 + '/' + areaString + '/' + stDate + '/' + stTime + '/' + endDate + '/' + endTime + '/' + days + '/' + months + '/' + _wildCardId + '/' + _wildCardText;
+            var url = ROOTURL + _report + '/' + badge + '/' + _name + '/' + _company + '/' + _division + '/' + 'null' + '/' + _misc1 + '/' + areaString + '/' + stDate + '/' + stTime + '/' + endDate + '/' + endTime + '/' + days + '/' + months + '/' + _wildCardId + '/' + _wildCardText;
         }
         // --------------
         reloadGridDivision();
@@ -1622,12 +1622,12 @@ function createGrid_DoorCategory(url) {
         sortorder: 'desc',
         viewrecords: true,
         autowidth: true,
-        height: 540,
+        height: 525,
         autoencode: true,
         gridview: true
     });
 
-    $('#list').jqGrid('filterToolbar', { searchOperators: true });
+    $('#list').jqGrid('filterToolbar', { searchOnEnter: false, defaultSearch: 'cn'});
 
     $('#list').jqGrid('navGrid', '#pager', {
         search: true,
@@ -1734,11 +1734,11 @@ function createGrid_AlarmStatus(url) {
         sortorder: 'desc',
         viewrecords: true,
         autowidth: true,
-        height: 540,
+        height: 525,
         autoencode: true,
         gridview: true
     });
-    $('#list').jqGrid('filterToolbar', { searchOperators: true });
+    $('#list').jqGrid('filterToolbar', { searchOnEnter: false, defaultSearch: 'cn' });
     $('#list').jqGrid('navGrid', '#pager', {
         search: true,
         searchtext: 'Search', //  Make the Search icon have a 'Search' label next to it
@@ -1861,11 +1861,11 @@ function createGrid_BadgeStatus(url) {
         sortorder: 'desc',
         viewrecords: true,
         autowidth: true,
-        height: 540,
+        height: 525,
         autoencode: true,
         gridview: true
     });
-    $('#list').jqGrid('filterToolbar', { searchOperators: true });
+    $('#list').jqGrid('filterToolbar', { searchOnEnter: false, defaultSearch: 'cn' });
     $('#list').jqGrid('navGrid', '#pager', {
         search: true,
         searchtext: 'Search', //  Make the Search icon have a 'Search' label next to it
@@ -1961,11 +1961,11 @@ function createGrid_TopSoundingAlarms(url) {
         sortorder: 'desc',
         viewrecords: true,
         autowidth: true,
-        height: 540,
+        height: 525,
         autoencode: true,
         gridview: true
     });
-    $('#list').jqGrid('filterToolbar', { searchOperators: true });
+    $('#list').jqGrid('filterToolbar', { searchOnEnter: false, defaultSearch: 'cn' });
     $('#list').jqGrid('navGrid', '#pager', {
         search: true,
         searchtext: 'Search', //  Make the Search icon have a 'Search' label next to it
@@ -2089,11 +2089,11 @@ function createGrid_Audit(url) {
         sortorder: 'desc',
         viewrecords: true,
         autowidth: true,
-        height: 540,
+        height: 525,
         autoencode: true,
         gridview: true,
     });
-    $('#list').jqGrid('filterToolbar', { searchOperators: true });
+    $('#list').jqGrid('filterToolbar', { searchOnEnter: false, defaultSearch: 'cn' });
 
     $('#list').jqGrid('navGrid', '#pager', {
         search: true,
@@ -2206,11 +2206,11 @@ function createGrid_Activity(url) {
         sortorder: 'desc',
         viewrecords: true,
         autowidth: true,
-        height: 540,
+        height: 525,
         autoencode: true,
         gridview: true
     });
-    $('#list').jqGrid('filterToolbar', { searchOperators: true });
+    $('#list').jqGrid('filterToolbar', { searchOnEnter: false, defaultSearch: 'cn' });
 
 
     $('#list').jqGrid('navGrid', '#pager', {

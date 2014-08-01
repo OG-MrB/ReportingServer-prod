@@ -24,6 +24,8 @@ namespace ReportingServerWebService.Models
         String dateTime;
         String day;
         String accessTime;
+        String empId;
+        String personId;
 
         public String Badge { get { return this.badge; } set { this.badge = value; } }
         public String Company { get { return this.company; } set { this.company = value; } }
@@ -35,6 +37,9 @@ namespace ReportingServerWebService.Models
         public String DateHistory { get { return this.dateTime; } set { this.dateTime = value; } }
         public String Day { get { return this.day; } set { this.day = value; } }
         public String AccessTime { get { return this.accessTime; } set { this.accessTime = value; } }
+
+        public String EmpId { get { return this.empId; } set { this.empId = value; } }
+        public String PersonId { get { return this.personId; } set { this.personId = value; } }
 
         public static Report_Activity getAccessReportObj()
         {
@@ -560,12 +565,13 @@ namespace ReportingServerWebService.Models
                 //Criteria 1: facility
                 //Criteria 2: area
                 //Criteria 3: Nothing
-                if (isFacilitySelected(areaString))
-                    mainSelectStatement = getMainQueryString(1,stDate,endDate);
-                else if (isAreaSelected(areaString))
-                    mainSelectStatement = getMainQueryString(2,stDate,endDate);
-                else
-                    mainSelectStatement = getMainQueryString(0,stDate,endDate);
+              
+                /* if (isFacilitySelected(areaString))
+                    mainSelectStatement = getMainQueryString(1,stDate,endDate,companyId,divisionId);
+                   else if (isAreaSelected(areaString))
+                    mainSelectStatement = getMainQueryString(2, stDate, endDate, companyId, divisionId);
+               else*/
+                    mainSelectStatement = getMainQueryString(0, stDate, endDate, companyId, divisionId);
 
 
 
@@ -648,36 +654,20 @@ namespace ReportingServerWebService.Models
                 if (!badgeId.Equals("null"))
                 {
                     String[] badgeArray = badgeId.Split(',');
-                    query = query + " AND ( dbo.badge.bid like '" + badgeArray[0] + "'";
+                    query = query + " AND ( [ACAMS_Import_Production_History].[dbo].[badge_history].badgeno = " + badgeArray[0];
                     for (int badgeCount = 1; badgeCount < badgeArray.Length; badgeCount++)
                     {
                         if (!badgeArray[badgeCount].Trim().Equals(""))
-                            query = query + " OR badge.bid like '" + badgeArray[badgeCount] + "'";
+                            query = query + " OR [ACAMS_Import_Production_History].[dbo].[badge_history].badgeno = " + badgeArray[badgeCount];
                     }
 
                     query = query + " ) ";
                 }
-                else
-                {
-                    query = query + " AND [ACAMS_Import_Production_History].[dbo].[badge_history].bid = dbo.badge.bid ";
-                }
+              
 
                 //Copy all the conditions of reporting server query to PP query
                 ppQuery = query;
 
-               /* if (!stDate.Equals("null"))
-                {
-                    //Pasadena
-                    //query = query + " AND @startDate <= (CAST(CAST(dbo.badge_history.dev_xact_date AS VARCHAR)+' '+STUFF(STUFF(STUFF(SUBSTRING(CAST(dbo.badge_history.dev_xact_time AS VARCHAR),1,6), 1, 0, REPLICATE('0', 6 - LEN(SUBSTRING(CAST(dbo.badge_history.dev_xact_time AS VARCHAR),1,6)))),3,0,':'),6,0,':')+'.000' AS datetime))";
-                    query = query + " AND @startDate <= [ACAMS_Import_Production_History].[dbo].[badge_history].xact_datetime ";
-                }
-
-                if (!endDate.Equals("null"))
-                {
-                    //Pasadena
-                    //query = query + " AND @endDate >= (CAST(CAST(dbo.badge_history.dev_xact_date AS VARCHAR)+' '+STUFF(STUFF(STUFF(SUBSTRING(CAST(dbo.badge_history.dev_xact_time AS VARCHAR),1,6), 1, 0, REPLICATE('0', 6 - LEN(SUBSTRING(CAST(dbo.badge_history.dev_xact_time AS VARCHAR),1,6)))),3,0,':'),6,0,':')+'.000' AS datetime))";
-                    query = query + " AND @endDate >= [ACAMS_Import_Production_History].[dbo].[badge_history].xact_datetime ";
-                }*/
 
                 if (days != null && days.Count() > 0)
                 {
@@ -692,7 +682,7 @@ namespace ReportingServerWebService.Models
 
                 if (!areaString.Equals("null"))
                 {
-                    mainSelectStatement = Report_Activity.getFacilityAreaQuery(areaString, query,stDate,endDate);
+                    mainSelectStatement = Report_Activity.getFacilityAreaQuery(areaString, query,stDate,endDate,companyId,divisionId);
                 }
                 else
                 {
@@ -749,10 +739,10 @@ namespace ReportingServerWebService.Models
                 foreach (DataRow row in myTable.Rows)
                 {
                     Report_Activity report = new Report_Activity();
-                    if (row["BADGE_ID"].ToString().Trim().Length > 6)
-                        report.Badge = row["BADGE_ID"].ToString().Trim().Substring(5);
-                    else
-                        report.Badge = "N/A";
+                    //if (row["BADGE_ID"].ToString().Trim().Length > 6)
+                        report.Badge = row["BADGE_ID"].ToString().Trim();
+                   // else
+                        //report.Badge = "N/A";
                     report.Company = row["COMPANY"].ToString().Trim();
                     report.FirstName = row["FIRST_NAME"].ToString().Trim();
                     report.LastName = row["LAST_NAME"].ToString().Trim();
@@ -762,6 +752,8 @@ namespace ReportingServerWebService.Models
                     report.DateHistory = row["ACCESS_DATETIME"].ToString().Trim();
                     report.Day = row["DAYS"].ToString().Trim();
                     report.AccessTime = row["ACCESS_TIME"].ToString().Trim();
+                    report.EmpId = row["EMP_ID"].ToString().Trim();
+                    report.PersonId = row["PERSON_ID"].ToString().Trim();
 
                     ReportRow repRow = new ReportRow();
                     repRow.id = (++count).ToString();
@@ -777,7 +769,7 @@ namespace ReportingServerWebService.Models
                 {
                     sqlreader.Close();
                 }
-
+                
                 //LAXCHANGES
                  List<ReportRow> ppDataRows = new List<ReportRow>();
 
@@ -786,19 +778,19 @@ namespace ReportingServerWebService.Models
                 
                  if (isLatestData)
                  {
-                     if (isFacilitySelected(areaString))
-                         mainPPSelectStatement = getPPData(1);
+                     /*if (isFacilitySelected(areaString))
+                         mainPPSelectStatement = getPPData(1,companyId,divisionId);
                      else if (isAreaSelected(areaString))
                          mainPPSelectStatement = getPPData(2);
-                     else
-                         mainPPSelectStatement = getPPData(0);
+                     else*/
+                         mainPPSelectStatement = getPPData(0,companyId,divisionId);
 
                      ppQuery = getPPConditionString(badgeId, personId, companyId, divisionId, "", status, stTime, endTime, wildCardType, wildCardData);
                      ppQuery = getWildCardquery(wildCardType, wildCardData, ppQuery);
 
                      if (!areaString.Equals("null"))
                      {
-                         mainPPSelectStatement = Report_Activity.getPPFacilityAreaQuery(areaString, ppQuery);
+                         mainPPSelectStatement = Report_Activity.getPPFacilityAreaQuery(areaString, ppQuery,companyId,divisionId);
                      }
                      else
                      {
@@ -836,48 +828,9 @@ namespace ReportingServerWebService.Models
             return rowList;
         }
 
-        private static string getMainQueryString(int criteria,string stDate,string endDate)
+        private static string getMainQueryString(int criteria,string stDate,string endDate,string companyId,string divisionId)
         {
-            /* String query = "";
-             query = "SELECT dbo.xact_desc.description AS STATUS, dbo.badge_history.reader_desc AS READER, dbo.badge_history.first_name AS FIRST_NAME, dbo.badge_history.last_name AS LAST_NAME,";
-             query = query + " dbo.department.user1 AS COMPANY, dbo.department.user2 AS DIV_NAME, dbo.person.employee AS EMP_ID,dbo.person.id AS PERSON_ID,dbo.badge_history.dev_xact_date, dbo.badge_history.dev_xact_time,";
-
-             query = query + " CAST(CAST(dbo.badge_history.dev_xact_date AS VARCHAR)+' '+STUFF(STUFF(STUFF(SUBSTRING(CAST(dbo.badge_history.dev_xact_time AS VARCHAR),1,6), 1, 0, REPLICATE('0', 6 - LEN(SUBSTRING(CAST(dbo.badge_history.dev_xact_time AS VARCHAR),1,6)))),3,0,':'),6,0,':')+'.000' AS datetime) AS ACCESS_DATETIME,";
-             query = query + " CAST(STR(FLOOR(dbo.badge_history.dev_xact_time / 10000), 2, 0)+ ':' + RIGHT(STR(FLOOR(dbo.badge_history.dev_xact_time / 100), 6, 0), 2)+ ':' + RIGHT(STR(dbo.badge_history.dev_xact_time), 2) AS TIME) AS ACCESS_TIME,";
-             query = query + " dbo.rs_company.companyId AS COMPANY_ID , dbo.rs_division.divisionId AS DIVISION_ID, dbo.badge.bid AS BADGE_ID,";
-             query = query + " dbo.person.address3 AS ADDRESS,dbo.person.address5 as ZIP_CODE";
-             query = query + " ,DATENAME(dw, CAST(CAST(dbo.badge_history.dev_xact_date AS VARCHAR)+' '+STUFF(STUFF(STUFF(SUBSTRING(CAST(dbo.badge_history.dev_xact_time AS VARCHAR),1,6), 1, 0, REPLICATE('0', 6 - LEN(SUBSTRING(CAST(dbo.badge_history.dev_xact_time AS VARCHAR),1,6)))),3,0,':'),6,0,':')+'.000' AS datetime)) AS DAYS";
-            
-             if (criteria == 1)
-                 query = query + " , dbo.facility.id as FACILITY_ID ,dbo.facility.description AS FACILITY ";
-             else if (criteria == 2)
-                 query = query + ", dbo.area.id AS AREA_ID,dbo.area.description AS AREA";
-
-             query = query + " FROM ";
-             query = query + " dbo.badge_history, dbo.badge, dbo.department , dbo.person , dbo.rs_company , dbo.rs_division, dbo.xact_desc ";
-
-             if (criteria == 1)
-                 query = query + ", dbo.facility ";
-             else if (criteria == 2)
-                 query = query + ", dbo.area ";
-
-             query = query + " WHERE ";
-             query = query + " dbo.badge_history.bid is NOT NULL AND (LEN(dbo.badge_history.bid) = 11 OR LEN(dbo.badge_history.bid) = 12) ";
-             query = query + " AND dbo.badge_history.employee is NOT NULL ";
-             query = query + " AND dbo.badge_history.dev_xact_date != 0 ";
-             query = query + " AND dbo.department.id = dbo.badge_history.dept ";
-             query = query + " AND dbo.badge_history.bid = dbo.badge.bid ";
-             query = query + " AND dbo.person.id = dbo.badge.person_id ";
-             query = query + " AND dbo.badge_history.xact_type = dbo.xact_desc.id ";
-             query = query + " AND dbo.department.user1 Like dbo.rs_company.companyName ";
-             query = query + " AND dbo.department.user2 Like dbo.rs_division.divisionName ";
           
-             if (criteria == 1)
-                 query = query + " AND dbo.badge_history.facility = dbo.facility.id ";
-             else if (criteria == 2)
-                 query = query + " AND dbo.badge_history.area = dbo.area.id ";
-
-             return query;*/
 
             String query = "";
             bool isDateSelected = false;
@@ -887,48 +840,51 @@ namespace ReportingServerWebService.Models
             query = query + ", dbo.person.first_name AS FIRST_NAME, dbo.person.last_name AS LAST_NAME ";
             query = query + ", dbo.person.employee AS EMP_ID ";
             query = query + ", dbo.person.id AS PERSON_ID ";
-            query = query + ", dbo.person.address3 AS ADDRESS ";
-            query = query + ", dbo.person.address5 as ZIP_CODE ";
-            query = query + ", dbo.department.user1 AS COMPANY ";
-            query = query + ", dbo.department.user2 AS DIV_NAME ";
-            query = query + ", dbo.rs_company.companyId AS COMPANY_ID ";
-            query = query + ", dbo.rs_division.divisionId AS DIVISION_ID ";
             query = query + ", [ACAMS_Import_Production_History].[dbo].[badge_history].xact_datetime AS ACCESS_DATETIME ";
             query = query + ", CAST([ACAMS_Import_Production_History].[dbo].[badge_history].xact_datetime as time) AS ACCESS_TIME ";
-
-
-
-            query = query + ", [ACAMS_Import_Production_History].[dbo].[badge_history].bid AS BADGE_ID ";
+            query = query + ", dbo.department.user1 AS COMPANY ";
+            query = query + ", [ACAMS_Import_Production_History].[dbo].[badge_history].badgeno AS BADGE_ID ";
             query = query + ", DATENAME(dw,[ACAMS_Import_Production_History].[dbo].[badge_history].xact_datetime) AS DAYS ";
+            //query = query + ", dbo.person.address3 AS ADDRESS ";
+            //query = query + ", dbo.person.address5 as ZIP_CODE ";
+            //query = query + ", dbo.department.user2 AS DIV_NAME ";
+            //query = query + ", dbo.rs_company.companyId AS COMPANY_ID ";
+            //query = query + ", dbo.rs_division.divisionId AS DIVISION_ID ";
 
-
-            if (criteria == 1)
+           /* if (criteria == 1)
                 query = query + " , dbo.facility.id as FACILITY_ID ,dbo.facility.description AS FACILITY ";
             else if (criteria == 2)
-                query = query + ", dbo.area.id AS AREA_ID,dbo.area.description AS AREA ";
+                query = query + ", dbo.area.id AS AREA_ID,dbo.area.description AS AREA ";*/
 
             query = query + " FROM ";
-            query = query + " [ACAMS_Import_Production_History].[dbo].[badge_history], dbo.badge, dbo.department , dbo.person , dbo.rs_company , dbo.rs_division, dbo.xact_desc ";
+            query = query + " [ACAMS_Import_Production_History].[dbo].[badge_history], dbo.department , dbo.person , dbo.xact_desc ";
+            //query = query + " ,dbo.badge ";
 
-            if (criteria == 1)
+            if(!divisionId.Equals("null"))
+            {
+                query = query + "  , dbo.rs_division ";
+            }
+
+            if(!companyId.Equals("null"))
+            {
+                query = query + "  , dbo.rs_company ";
+            }
+
+            /*if (criteria == 1)
                 query = query + ", dbo.facility ";
             else if (criteria == 2)
-                query = query + ", dbo.area ";
+                query = query + ", dbo.area ";*/
 
             query = query + " WHERE ";
 
             if (!stDate.Equals("null"))
             {
-                //Pasadena
-                //query = query + " AND @startDate <= (CAST(CAST(dbo.badge_history.dev_xact_date AS VARCHAR)+' '+STUFF(STUFF(STUFF(SUBSTRING(CAST(dbo.badge_history.dev_xact_time AS VARCHAR),1,6), 1, 0, REPLICATE('0', 6 - LEN(SUBSTRING(CAST(dbo.badge_history.dev_xact_time AS VARCHAR),1,6)))),3,0,':'),6,0,':')+'.000' AS datetime))";
                 query = query + " @startDate <= [ACAMS_Import_Production_History].[dbo].[badge_history].xact_datetime ";
                 isDateSelected = true;
             }
 
             if (!endDate.Equals("null"))
             {
-                //Pasadena
-                //query = query + " AND @endDate >= (CAST(CAST(dbo.badge_history.dev_xact_date AS VARCHAR)+' '+STUFF(STUFF(STUFF(SUBSTRING(CAST(dbo.badge_history.dev_xact_time AS VARCHAR),1,6), 1, 0, REPLICATE('0', 6 - LEN(SUBSTRING(CAST(dbo.badge_history.dev_xact_time AS VARCHAR),1,6)))),3,0,':'),6,0,':')+'.000' AS datetime))";
                 if(isDateSelected)
                 query = query + " AND @endDate >= [ACAMS_Import_Production_History].[dbo].[badge_history].xact_datetime ";
                 else
@@ -944,26 +900,28 @@ namespace ReportingServerWebService.Models
             query = query + " AND [ACAMS_Import_Production_History].[dbo].[badge_history].employee is NOT NULL ";
             query = query + " AND [ACAMS_Import_Production_History].[dbo].[badge_history].xact_datetime is NOT NULL ";
             query = query + " AND dbo.department.id = [ACAMS_Import_Production_History].[dbo].[badge_history].dept ";
-           
-            query = query + " AND [ACAMS_Import_Production_History].[dbo].[badge_history].employee = dbo.person.employee ";
-            
             query = query + " AND [ACAMS_Import_Production_History].[dbo].[badge_history].xact_type = dbo.xact_desc.id ";
-            query = query + " AND dbo.department.user1 Like dbo.rs_company.companyName ";
-            query = query + " AND dbo.department.user2 Like dbo.rs_division.divisionName ";
-           
-            query = query + " AND dbo.person.id = dbo.badge.person_id ";
+            query = query + " AND [ACAMS_Import_Production_History].[dbo].[badge_history].employee = dbo.person.employee ";
 
-            
+            if (!divisionId.Equals("null"))
+            {
+                query = query + " AND dbo.department.user2 Like dbo.rs_division.divisionName ";
+            }
 
-            if (criteria == 1)
+            if (!companyId.Equals("null"))
+            {
+                query = query + " AND dbo.department.user1 Like dbo.rs_company.companyName ";
+            }
+
+            /*if (criteria == 1)
                 query = query + " AND [ACAMS_Import_Production_History].[dbo].[badge_history].facility = dbo.facility.id ";
             else if (criteria == 2)
-                query = query + " AND [ACAMS_Import_Production_History].[dbo].[badge_history].area = dbo.area.id ";
+                query = query + " AND [ACAMS_Import_Production_History].[dbo].[badge_history].area = dbo.area.id ";*/
 
             return query;
         }
 
-        private static string getFacilityAreaQuery(string areaString, string query,string stDate,string endDate)
+        private static string getFacilityAreaQuery(string areaString, string query,string stDate,string endDate,string companyId,string divisionId)
         {
 
             String mainQuery = "";
@@ -981,20 +939,20 @@ namespace ReportingServerWebService.Models
 
                 if (!facility.Equals("null"))
                 {
-                    mainQuery = getMainQueryString(1,stDate,endDate);
+                    mainQuery = getMainQueryString(0,stDate,endDate,companyId,divisionId);
                     mainQuery = mainQuery + query;
-                    mainQuery = mainQuery + " AND  dbo.facility.id = " + facility;
+                    mainQuery = mainQuery + " AND  [ACAMS_Import_Production_History].[dbo].[badge_history].facility = " + facility;
                 }
 
                 else if (!area.Equals("null"))
                 {
-                    mainQuery = getMainQueryString(2,stDate,endDate);
+                    mainQuery = getMainQueryString(0,stDate,endDate,companyId,divisionId);
                     mainQuery = mainQuery + query;
-                    mainQuery = mainQuery + " AND dbo.area.id = " + area;
+                    mainQuery = mainQuery + " AND [ACAMS_Import_Production_History].[dbo].[badge_history].area = " + area;
                 }
                 else
                 {
-                    mainQuery = getMainQueryString(0,stDate,endDate);
+                    mainQuery = getMainQueryString(0,stDate,endDate,companyId,divisionId);
                     mainQuery = mainQuery + query;
                 }
                 if (!reader.Equals("null"))
@@ -1018,20 +976,20 @@ namespace ReportingServerWebService.Models
 
                 if (!facility.Equals("null"))
                 {
-                    tempString = getMainQueryString(1,stDate,endDate);
+                    tempString = getMainQueryString(0,stDate,endDate,companyId,divisionId);
                     tempString = tempString + query;
-                    tempString = tempString + " AND  dbo.facility.id = " + facility;
+                    tempString = tempString + " AND [ACAMS_Import_Production_History].[dbo].[badge_history].facility = " + facility;
                 }
 
                 else if (!area.Equals("null"))
                 {
-                    tempString = getMainQueryString(2,stDate,endDate);
+                    tempString = getMainQueryString(0, stDate, endDate, companyId, divisionId);
                     tempString = tempString + query;
-                    tempString = tempString + " AND dbo.area.id = " + area;
+                    tempString = tempString + " AND [ACAMS_Import_Production_History].[dbo].[badge_history].area = " + area;
                 }
                 else
                 {
-                    tempString = getMainQueryString(0,stDate,endDate);
+                    tempString = getMainQueryString(0, stDate, endDate, companyId, divisionId);
                     tempString = tempString + query;
                     if (!reader.Equals("null"))
                     {
@@ -1097,48 +1055,71 @@ namespace ReportingServerWebService.Models
         }
 
         
-        private static string getPPData(int criteria)
+        private static string getPPData(int criteria,string companyId,string divisionId)
         {
             //Method for retriving latest data from picture perfect
             //Replace PP with the linked server DB name
+
+         
             String query = "";
-            query = "SELECT distinct pp_xact_desc.description AS STATUS, pp_b_hist.reader_desc AS READER, pp_b_hist.first_name AS FIRST_NAME, pp_b_hist.last_name AS LAST_NAME,";
-            query = query + " pp_dept.user1 AS COMPANY, pp_dept.user2 AS DIV_NAME, pp_person.employee AS EMP_ID,pp_person.id AS PERSON_ID,pp_b_hist.dev_xact_date, pp_b_hist.dev_xact_time,";
+            query = "SELECT distinct pp_xact_desc.description AS STATUS, pp_b_hist.reader_desc AS READER, pp_b_hist.first_name AS FIRST_NAME, pp_b_hist.last_name AS LAST_NAME ";
+            query = query + " ,pp_dept.user1 AS COMPANY ";
+            query = query + " , pp_person.employee AS EMP_ID, pp_person.id AS PERSON_ID ";
+            query = query + " , CAST(CAST(pp_b_hist.dev_xact_date AS VARCHAR)+' '+STUFF(STUFF(STUFF(SUBSTRING(CAST(pp_b_hist.dev_xact_time AS VARCHAR),1,6), 1, 0, REPLICATE('0', 6 - LEN(SUBSTRING(CAST(pp_b_hist.dev_xact_time AS VARCHAR),1,6)))),3,0,':'),6,0,':')+'.000' AS datetime) AS ACCESS_DATETIME ";
+            query = query + " , CAST(STR(FLOOR(pp_b_hist.dev_xact_time / 10000), 2, 0)+ ':' + RIGHT(STR(FLOOR(pp_b_hist.dev_xact_time / 100), 6, 0), 2)+ ':' + RIGHT(STR(pp_b_hist.dev_xact_time), 2) AS TIME) AS ACCESS_TIME ";
+            query = query + " , pp_badge.unique_id AS BADGE_ID";
+            query = query + " , DATENAME(dw,CAST(CAST(pp_b_hist.dev_xact_date AS VARCHAR)+' '+STUFF(STUFF(STUFF(SUBSTRING(CAST(pp_b_hist.dev_xact_time AS VARCHAR),1,6), 1, 0, REPLICATE('0', 6 - LEN(SUBSTRING(CAST(pp_b_hist.dev_xact_time AS VARCHAR),1,6)))),3,0,':'),6,0,':')+'.000' AS datetime)) AS DAYS ";
+           
+            //query = query + " ,pp_dept.user2 AS DIV_NAME ";
+            //query = query + " , pp_person.address3 AS ADDRESS,pp_person.address5 as ZIP_CODE , ";
 
-            query = query + " CAST(CAST(pp_b_hist.dev_xact_date AS VARCHAR)+' '+STUFF(STUFF(STUFF(SUBSTRING(CAST(pp_b_hist.dev_xact_time AS VARCHAR),1,6), 1, 0, REPLICATE('0', 6 - LEN(SUBSTRING(CAST(pp_b_hist.dev_xact_time AS VARCHAR),1,6)))),3,0,':'),6,0,':')+'.000' AS datetime) AS ACCESS_DATETIME,";
-            query = query + " CAST(STR(FLOOR(pp_b_hist.dev_xact_time / 10000), 2, 0)+ ':' + RIGHT(STR(FLOOR(pp_b_hist.dev_xact_time / 100), 6, 0), 2)+ ':' + RIGHT(STR(pp_b_hist.dev_xact_time), 2) AS TIME) AS ACCESS_TIME,";
-            query = query + " dbo.rs_company.companyId AS COMPANY_ID , dbo.rs_division.divisionId AS DIVISION_ID, pp_b_hist.bid AS BADGE_ID,";
-            query = query + " pp_person.address3 AS ADDRESS,pp_person.address5 as ZIP_CODE , ";
-            query = query + " DATENAME(dw,CAST(CAST(pp_b_hist.dev_xact_date AS VARCHAR)+' '+STUFF(STUFF(STUFF(SUBSTRING(CAST(pp_b_hist.dev_xact_time AS VARCHAR),1,6), 1, 0, REPLICATE('0', 6 - LEN(SUBSTRING(CAST(pp_b_hist.dev_xact_time AS VARCHAR),1,6)))),3,0,':'),6,0,':')+'.000' AS datetime)) AS DAYS";
-
-            if (criteria == 1)
+            /*if (criteria == 1)
                 query = query + " , PP.proteus.informix.facility.id as FACILITY_ID ,PP.proteus.informix.facility.description AS FACILITY ";
             else if (criteria == 2)
-                query = query + ", PP.proteus.informix.area.id AS AREA_ID,PP.proteus.informix.area.description AS AREA";
+                query = query + ", PP.proteus.informix.area.id AS AREA_ID,PP.proteus.informix.area.description AS AREA";*/
 
             query = query + " FROM ";
-            query = query + " PP.proteus.informix.badge_history pp_b_hist, PP.proteus.informix.badge pp_badge, PP.proteus.informix.department pp_dept, PP.proteus.informix.person pp_person, dbo.rs_company , dbo.rs_division, PP.proteus.informix.xact_desc pp_xact_desc";
+            query = query + " PP.proteus.informix.badge_history pp_b_hist, PP.proteus.informix.badge pp_badge, PP.proteus.informix.department pp_dept, PP.proteus.informix.person pp_person, PP.proteus.informix.xact_desc pp_xact_desc ";
 
-            if (criteria == 1)
+            if(!companyId.Equals("null"))
+            {
+                 query = query + " , dbo.rs_company ";
+            }
+
+            if (!divisionId.Equals("null"))
+            {
+                query = query + " , dbo.rs_division ";
+            }
+
+            /*if (criteria == 1)
                 query = query + ", PP.proteus.informix.facility ";
             else if (criteria == 2)
-                query = query + ", PP.proteus.informix.area ";
+                query = query + ", PP.proteus.informix.area ";*/
 
             query = query + " WHERE ";
-            query = query + " pp_b_hist.bid is NOT NULL AND (LEN(pp_b_hist.bid) = 11 OR LEN(pp_b_hist.bid) = 12) ";
+            query = query + " pp_b_hist.dev_xact_date = CAST(convert(varchar,getdate(),112) as int) ";
+            query = query + " AND pp_b_hist.bid is NOT NULL AND (LEN(pp_b_hist.bid) = 11 OR LEN(pp_b_hist.bid) = 12) ";
             query = query + " AND pp_b_hist.employee is NOT NULL ";
             query = query + " AND pp_b_hist.dev_xact_date != 0 ";
             query = query + " AND pp_dept.id =  pp_b_hist.dept ";
             query = query + " AND pp_b_hist.employee = pp_person.employee ";
             query = query + " AND pp_b_hist.xact_type = pp_xact_desc.id ";
-            query = query + " AND pp_dept.user1 Like dbo.rs_company.companyName ";
-            query = query + " AND pp_dept.user2 Like dbo.rs_division.divisionName ";
-            query = query + " AND pp_b_hist.dev_xact_date = CAST(convert(varchar,getdate(),112) as int) ";
             query = query + " AND pp_badge.bid = pp_b_hist.bid AND pp_badge.person_id = pp_person.id ";
-            if (criteria == 1)
+
+            if (!companyId.Equals("null"))
+            {
+                query = query + " AND pp_dept.user1 Like dbo.rs_company.companyName ";
+            }
+
+            if (!divisionId.Equals("null"))
+            {
+                query = query + " AND pp_dept.user2 Like dbo.rs_division.divisionName ";
+            }
+
+            /*if (criteria == 1)
                 query = query + " AND pp_b_hist.facility = PP.proteus.informix.facility.id ";
             else if (criteria == 2)
-                query = query + " AND pp_b_hist.area = PP.proteus.informix.area.id ";
+                query = query + " AND pp_b_hist.area = PP.proteus.informix.area.id ";*/
 
             return query;
 
@@ -1180,15 +1161,16 @@ namespace ReportingServerWebService.Models
                 int count = 0;
                 using (sqlreader = command.ExecuteReader())
                 {
+
                     //Read from the reader
                     while (sqlreader.Read())
                     {
                         Report_Activity report = new Report_Activity();
 
-                        if (sqlreader.GetSqlValue(14).ToString().Trim().Length > 6)
-                            report.Badge = sqlreader.GetSqlValue(14).ToString().Trim().Substring(5);
-                        else
-                            report.Badge = "N/A";
+                       // if (sqlreader.GetSqlValue(9).ToString().Trim().Length > 6)
+                            report.Badge = sqlreader.GetSqlValue(9).ToString().Trim();
+                       // else
+                            //report.Badge = "N/A";
 
                         report.Company = sqlreader.GetSqlValue(4).ToString().Trim();
                         report.FirstName = sqlreader.GetSqlValue(2).ToString().Trim();
@@ -1196,9 +1178,11 @@ namespace ReportingServerWebService.Models
                         report.Reader = sqlreader.GetSqlValue(1).ToString().Trim();
                         report.Status = sqlreader.GetSqlValue(0).ToString().Trim(); ;
                         report.Name = report.FirstName + " " + report.LastName;
-                        report.DateHistory = sqlreader.GetSqlValue(10).ToString().Trim();
-                        report.Day = sqlreader.GetSqlValue(17).ToString().Trim();
-                        report.AccessTime = sqlreader.GetSqlValue(11).ToString().Trim();
+                        report.DateHistory = sqlreader.GetSqlValue(7).ToString().Trim();
+                        report.Day = sqlreader.GetSqlValue(10).ToString().Trim();
+                        report.AccessTime = sqlreader.GetSqlValue(8).ToString().Trim();
+                        report.EmpId = sqlreader.GetSqlValue(5).ToString().Trim();
+                        report.PersonId = sqlreader.GetSqlValue(6).ToString().Trim();
 
                         ReportRow repRow = new ReportRow();
                         repRow.id = (++count).ToString();
@@ -1232,7 +1216,7 @@ namespace ReportingServerWebService.Models
             return rowList;
         }
 
-        private static string getPPFacilityAreaQuery(string areaString, string query)
+        private static string getPPFacilityAreaQuery(string areaString, string query,string companyId,string divisionId)
         {
 
             String mainQuery = "";
@@ -1250,26 +1234,24 @@ namespace ReportingServerWebService.Models
 
                 if (!facility.Equals("null"))
                 {
-                    mainQuery = getPPData(1);
+                    mainQuery = getPPData(0, companyId,divisionId);
                     mainQuery = mainQuery + query;
-                    mainQuery = mainQuery + " AND  PP.proteus.informix.facility.id = " + facility;
+                    mainQuery = mainQuery + " AND  pp_b_hist.facility = " + facility;
                 }
 
                 else if (!area.Equals("null"))
                 {
-                    mainQuery = getPPData(2);
+                    mainQuery = getPPData(0,companyId,divisionId);
                     mainQuery = mainQuery + query;
-                    mainQuery = mainQuery + " AND PP.proteus.informix.area.id = " + area;
+                    mainQuery = mainQuery + " AND pp_b_hist.area = " + area;
                 }
                 else
                 {
-                    mainQuery = getPPData(0);
+                    mainQuery = getPPData(0,companyId,divisionId);
                     mainQuery = mainQuery + query;
                 }
                 if (!reader.Equals("null"))
                 {
-                    //Pasadena
-                    //mainQuery = mainQuery + " AND  badge_history.reader_desc like '" + reader + "'";
                     mainQuery = mainQuery + " AND  pp_b_hist.reader_desc like '" + reader + "'";
                 }
 
@@ -1287,20 +1269,20 @@ namespace ReportingServerWebService.Models
 
                 if (!facility.Equals("null"))
                 {
-                    tempString = getPPData(1);
+                    tempString = getPPData(0,companyId,divisionId);
                     tempString = tempString + query;
-                    tempString = tempString + " AND  PP.proteus.informix.facility.id = " + facility;
+                    tempString = tempString + " AND  pp_b_hist.facility = " + facility;
                 }
 
                 else if (!area.Equals("null"))
                 {
-                    tempString = getPPData(2);
+                    tempString = getPPData(0,companyId,divisionId);
                     tempString = tempString + query;
-                    tempString = tempString + " AND PP.proteus.informix.area.id = " + area;
+                    tempString = tempString + " AND pp_b_hist.area = " + area;
                 }
                 else
                 {
-                    tempString = getPPData(0);
+                    tempString = getPPData(0,companyId,divisionId);
                     tempString = tempString + query;
                     if (!reader.Equals("null"))
                     {
@@ -1370,19 +1352,16 @@ namespace ReportingServerWebService.Models
             if (!badgeId.Equals("null"))
             {
                 String[] badgeArray = badgeId.Split(',');
-                query = query + " AND ( pp_badge.bid like '" + badgeArray[0] + "'";
+                query = query + " AND ( pp_badge.unique_id = " + badgeArray[0];
                 for (int badgeCount = 1; badgeCount < badgeArray.Length; badgeCount++)
                 {
                     if (!badgeArray[badgeCount].Trim().Equals(""))
-                        query = query + " OR pp_badge.bid like '" + badgeArray[badgeCount] + "'";
+                        query = query + " OR pp_badge.unique_id = " + badgeArray[badgeCount];
                 }
 
                 query = query + " ) ";
             }
-            else
-            {
-                query = query + " AND pp_b_hist.bid = pp_badge.bid ";
-            }
+           
 
             return query;
         }

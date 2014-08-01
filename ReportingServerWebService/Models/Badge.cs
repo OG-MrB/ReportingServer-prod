@@ -269,7 +269,7 @@ namespace ReportingServerWebService.Models
                 conn = ConnectionManager.getConnection();
                 conn.Open();
 
-                String query = "select TOP 50 bid from badge";
+                String query = "select TOP 50 bid,unique_id from badge where unique_id IS NOT NULL AND unique_id <> '' ";
                 SqlCommand command = new SqlCommand(query, conn);
 
 
@@ -282,7 +282,7 @@ namespace ReportingServerWebService.Models
                         {
                             Badge objBadge = new Badge();
                             objBadge.BadgeId = reader.GetSqlValue(0).ToString().Trim();
-                            objBadge.BadgeValue = reader.GetSqlValue(0).ToString().Trim().Substring(5);
+                            objBadge.BadgeValue = reader.GetSqlValue(1).ToString().Trim();
                             lstBadge.Add(objBadge);
                         }
                     }
@@ -338,20 +338,20 @@ namespace ReportingServerWebService.Models
                 if (!companyId.Equals("null") && !divisionId.Equals("null"))
                 {
                     // query = "select TOP 500  B.bid, B.unique_id from badge B,person P,department D where B.person_id = P.id and P.department = D.id and D.user1 like @company and D.user2 like @division";
-                    query = "select TOP 50 B.bid FROM badge B,person P, department D,rs_company Comp, rs_division Div";
-                    query = query + " WHERE B.person_id = P.id AND P.department = D.id AND Comp.companyId = @company AND Div.divisionId = @division AND D.user1 LIKE Comp.companyName AND D.user2 LIKE Div.divisionName";
+                    query = "select TOP 50 B.bid,B.unique_id FROM badge B,person P, department D,rs_company Comp, rs_division Div";
+                    query = query + " WHERE B.person_id = P.id AND P.department = D.id AND Comp.companyId = @company AND Div.divisionId = @division AND D.user1 LIKE Comp.companyName AND D.user2 LIKE Div.divisionName and B.unique_id IS NOT NULL AND B.unique_id <> ''";
                 }
                 else if (companyId.Equals("null"))
                 {
                     //query = "select B.bid, B.unique_id from badge B,person P,department D where B.person_id = P.id and P.department = D.id and D.user2 like @division";
-                    query = "select TOP 50 B.bid FROM badge B,person P, department D, rs_division Div";
-                    query = query + " WHERE B.person_id = P.id AND P.department = D.id AND Div.divisionId = @division AND D.user2 LIKE Div.divisionName";
+                    query = "select TOP 50 B.bid,B.unique_id FROM badge B,person P, department D, rs_division Div";
+                    query = query + " WHERE B.person_id = P.id AND P.department = D.id AND Div.divisionId = @division AND D.user2 LIKE Div.divisionName AND B.unique_id IS NOT NULL AND B.unique_id <> ''";
                 }
                 else
                 {
                     //query = "select B.bid, B.unique_id from badge B,person P,department D where B.person_id = P.id and P.department = D.id and D.user1 like @company";
-                    query = "select TOP 50 B.bid FROM badge B,person P, department D,rs_company Comp";
-                    query = query + " WHERE B.person_id = P.id AND P.department = D.id AND Comp.companyId = @company AND D.user1 LIKE Comp.companyName";
+                    query = "select TOP 50 B.bid,B.unique_id FROM badge B,person P, department D,rs_company Comp";
+                    query = query + " WHERE B.person_id = P.id AND P.department = D.id AND Comp.companyId = @company AND D.user1 LIKE Comp.companyName B.unique_id IS NOT NULL AND B.unique_id <> ''";
                 }
 
                 SqlCommand command = new SqlCommand(query, conn);
@@ -367,7 +367,7 @@ namespace ReportingServerWebService.Models
                         {
                             Badge objBadge = new Badge();
                             objBadge.BadgeId = reader.GetSqlValue(0).ToString().Trim();
-                            objBadge.BadgeValue = reader.GetSqlValue(0).ToString().Trim().Substring(5);
+                            objBadge.BadgeValue = reader.GetSqlValue(1).ToString().Trim();
                             lstBadge.Add(objBadge);
                         }
                     }
@@ -417,26 +417,26 @@ namespace ReportingServerWebService.Models
 
                 if (companyId.Equals("null") && divisionId.Equals("null"))
                 {
-                    query = "select TOP 50  bid from badge where unique_id like '%" + keyStroke + "%'";
+                    query = "select TOP 50 bid,unique_id from badge where unique_id like '%" + keyStroke + "%' and unique_id IS NOT NULL AND unique_id <> ''";
                 }
 
                 else if (!companyId.Equals("null") && !divisionId.Equals("null"))
                 {
                     // query = "select TOP 500  B.bid, B.unique_id from badge B,person P,department D where B.person_id = P.id and P.department = D.id and D.user1 like @company and D.user2 like @division";
-                    query = "select TOP 50  B.bid FROM badge B,person P, department D,rs_company Comp, rs_division Div";
-                    query = query + " WHERE B.person_id = P.id AND P.department = D.id AND Comp.companyId = @company AND Div.divisionId = @division AND D.user1 LIKE Comp.companyName AND D.user2 LIKE Div.divisionName AND B.unique_id like '%" + keyStroke + "%'";
+                    query = "select TOP 50  B.bid,B.unique_id FROM badge B,person P, department D,rs_company Comp, rs_division Div";
+                    query = query + " WHERE B.person_id = P.id AND P.department = D.id AND Comp.companyId = @company AND Div.divisionId = @division AND D.user1 LIKE Comp.companyName AND D.user2 LIKE Div.divisionName AND B.unique_id like '%" + keyStroke + "%' AND B.unique_id IS NOT NULL AND B.unique_id <> ''";
                 }
                 else if (companyId.Equals("null"))
                 {
                     //query = "select B.bid, B.unique_id from badge B,person P,department D where B.person_id = P.id and P.department = D.id and D.user2 like @division";
-                    query = "select TOP 50  B.bid FROM badge B,person P, department D, rs_division Div";
-                    query = query + " WHERE B.person_id = P.id AND P.department = D.id AND Div.divisionId = @division AND D.user2 LIKE Div.divisionName AND B.unique_id like '%" + keyStroke + "%'";
+                    query = "select TOP 50  B.bid,B.unique_id FROM badge B,person P, department D, rs_division Div";
+                    query = query + " WHERE B.person_id = P.id AND P.department = D.id AND Div.divisionId = @division AND D.user2 LIKE Div.divisionName AND B.unique_id like '%" + keyStroke + "%' and B.unique_id IS NOT NULL AND B.unique_id <> ''";
                 }
                 else
                 {
                     //query = "select B.bid, B.unique_id from badge B,person P,department D where B.person_id = P.id and P.department = D.id and D.user1 like @company";
-                    query = "select TOP 50  B.bid FROM badge B,person P, department D,rs_company Comp";
-                    query = query + " WHERE B.person_id = P.id AND P.department = D.id AND Comp.companyId = @company AND D.user1 LIKE Comp.companyName AND B.unique_id like '%" + keyStroke + "%'";
+                    query = "select TOP 50  B.bid,B.unique_id FROM badge B,person P, department D,rs_company Comp";
+                    query = query + " WHERE B.person_id = P.id AND P.department = D.id AND Comp.companyId = @company AND D.user1 LIKE Comp.companyName AND B.unique_id like '%" + keyStroke + "%' and B.unique_id IS NOT NULL AND B.unique_id <> ''";
                 }
 
                 SqlCommand command = new SqlCommand(query, conn);
@@ -452,7 +452,7 @@ namespace ReportingServerWebService.Models
                         {
                             Badge objBadge = new Badge();
                             objBadge.BadgeId = reader.GetSqlValue(0).ToString().Trim();
-                            objBadge.BadgeValue = reader.GetSqlValue(0).ToString().Trim().Substring(5);
+                            objBadge.BadgeValue = reader.GetSqlValue(1).ToString().Trim();
                             lstBadge.Add(objBadge);
                         }
                     }

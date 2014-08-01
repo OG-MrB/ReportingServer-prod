@@ -62,13 +62,23 @@ namespace Export
             HtmlTextWriter hw = new HtmlTextWriter(sw);
             GridView1.RenderControl(hw);
             StringReader sr = new StringReader(sw.ToString());
-            Document pdfDoc = new Document(PageSize.A4.Rotate(), 5f, 5f, 5f, 10f);
+            Document pdfDoc = new Document(PageSize.A4.Rotate(), 7f, 7f, 70f, 35f);
            
             HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
 
-            PdfWriter.GetInstance(pdfDoc, System.Web.HttpContext.Current.Response.OutputStream);
-            iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance("http://10.65.216.71:5666/resources/report_images/header_logo.PNG");
+           PdfWriter writer =  PdfWriter.GetInstance(pdfDoc, System.Web.HttpContext.Current.Response.OutputStream);
+            //iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance("http://10.65.216.71:5666/resources/report_images/header_logo.PNG");
            
+            //Header Call
+            pdfPage page = new pdfPage();
+
+           
+
+            //set the PageEvent of the pdfWriter instance to the instance of our PDFPage class
+            //PdfWriter.PageEvent = page;
+
+            writer.PageEvent = page;
+
 
             Paragraph para = new Paragraph(new Phrase(title + "\n", new iTextSharp.text.Font(iTextSharp.text.Font.BOLD, 16f, iTextSharp.text.Font.COURIER, iTextSharp.text.Color.DARK_GRAY)));
             para.Alignment = Element.ALIGN_CENTER;
@@ -77,9 +87,10 @@ namespace Export
             criteria.Alignment = Element.ALIGN_CENTER;
       
             
+
             int x = GridView1.Columns.Count;
             PdfPTable table = new PdfPTable(dt.Columns.Count);
-            table.WidthPercentage = 100;
+            table.WidthPercentage = 95;
             
 
             /*PdfPCell cell = new PdfPCell(new Phrase("<Title of the Report>", new iTextSharp.text.Font(iTextSharp.text.Font.BOLD, 16f, iTextSharp.text.Font.COURIER, iTextSharp.text.Color.WHITE)));
@@ -94,10 +105,10 @@ namespace Export
             for (int j = 0; j < dt.Columns.Count; j++)
             {
 
-                cell_data = new PdfPCell(new Phrase(GridView1.HeaderRow.Cells[j].Text, new iTextSharp.text.Font(iTextSharp.text.Font.BOLD, 14f, iTextSharp.text.Font.COURIER, iTextSharp.text.Color.BLACK)));
+                cell_data = new PdfPCell(new Phrase(GridView1.HeaderRow.Cells[j].Text, new iTextSharp.text.Font(iTextSharp.text.Font.BOLD, 12f, iTextSharp.text.Font.COURIER, iTextSharp.text.Color.BLACK)));
                 cell_data.BackgroundColor = new iTextSharp.text.Color(102, 178, 255);
-                cell_data.PaddingLeft = cell_data.PaddingRight = 5f;
-                cell_data.PaddingTop = cell_data.PaddingBottom = 7f;
+                cell_data.PaddingLeft = cell_data.PaddingRight = 1f;
+                cell_data.PaddingTop = cell_data.PaddingBottom = 5f;
                 cell_data.HorizontalAlignment = 0; //0=Left, 1=Centre, 2=Right
                 cell_data.BorderColor = new Color(192, 192, 192);
                 cell_data.Border = Rectangle.BOTTOM_BORDER;
@@ -115,10 +126,10 @@ namespace Export
                         if (GridView1.Rows[i].Cells[k].Text != null)
                         {
 
-                            cell_data = new PdfPCell(new Phrase(GridView1.Rows[i].Cells[k].Text, new iTextSharp.text.Font(iTextSharp.text.Font.NORMAL, 9f, iTextSharp.text.Font.HELVETICA, iTextSharp.text.Color.BLACK)));
+                            cell_data = new PdfPCell(new Phrase(GridView1.Rows[i].Cells[k].Text, new iTextSharp.text.Font(iTextSharp.text.Font.NORMAL, 8f, iTextSharp.text.Font.HELVETICA, iTextSharp.text.Color.BLACK)));
                             cell_data.BackgroundColor = new iTextSharp.text.Color(230, 230, 230);
-                            cell_data.PaddingLeft = cell_data.PaddingRight = 3f;
-                            cell_data.PaddingTop = cell_data.PaddingBottom = 5f;
+                            cell_data.PaddingLeft = cell_data.PaddingRight = 2f;
+                            cell_data.PaddingTop = cell_data.PaddingBottom = 3f;
                             cell_data.BorderColor = new Color(192,192,192);
                             cell_data.Border = Rectangle.BOTTOM_BORDER;
                             cell_data.HorizontalAlignment = 0; //0=Left, 1=Centre, 2=Right
@@ -130,10 +141,10 @@ namespace Export
                         if (GridView1.Rows[i].Cells[k].Text != null)
                         {
 
-                            cell_data = new PdfPCell(new Phrase(GridView1.Rows[i].Cells[k].Text, new iTextSharp.text.Font(iTextSharp.text.Font.NORMAL, 9f, iTextSharp.text.Font.HELVETICA, iTextSharp.text.Color.BLACK)));
+                            cell_data = new PdfPCell(new Phrase(GridView1.Rows[i].Cells[k].Text, new iTextSharp.text.Font(iTextSharp.text.Font.NORMAL, 8f, iTextSharp.text.Font.HELVETICA, iTextSharp.text.Color.BLACK)));
                             cell_data.BackgroundColor = new iTextSharp.text.Color(255,255,255);
-                            cell_data.PaddingLeft = cell_data.PaddingRight = 1f;
-                            cell_data.PaddingTop = cell_data.PaddingBottom = 5f;
+                            cell_data.PaddingLeft = cell_data.PaddingRight = 2f;
+                            cell_data.PaddingTop = cell_data.PaddingBottom = 3f;
                             cell_data.BorderColor = new Color(192, 192, 192);
                             cell_data.Border = Rectangle.BOTTOM_BORDER;
                             cell_data.HorizontalAlignment = 0; //0=Left, 1=Centre, 2=Right
@@ -145,9 +156,10 @@ namespace Export
             }
 
                 pdfDoc.Open();
-            //pdfDoc.Add(logo);
+           // pdfDoc.Add(logo);
             pdfDoc.Add(para);
             pdfDoc.Add(criteria);
+            //table.WriteSelectedRows(0, -1, 0, table.TotalHeight() + 18, writer.DirectContent);
             pdfDoc.Add(table);
             //htmlparser.Parse(sr);
             pdfDoc.Close();

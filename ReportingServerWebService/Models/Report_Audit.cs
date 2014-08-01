@@ -271,14 +271,14 @@ namespace ReportingServerWebService.Models
                 String query = "";
 
                 query = "SELECT distinct comp.companyId AS COMPANY_ID, comp.companyName AS COMPANY_NAME, div.divisionId AS DIVISION_ID, div.divisionName AS DIVISION, p.employee AS EMPLOYEE_ID,p.id AS PERSON_ID, p.first_name AS FIRST_NAME, p.last_name AS LAST_NAME, ";
-                query = query + " c.description AS CATEGORY_NAME,c.id AS CATEGORY_ID, b.bid AS BADGE_ID, p.address3 AS ADDRESS,p.address5 AS ZIP_CODE,bsts.cond_desc as BADGE_STATUS";
+                query = query + " c.description AS CATEGORY_NAME,c.id AS CATEGORY_ID, b.unique_id AS BADGE_ID, p.address3 AS ADDRESS,p.address5 AS ZIP_CODE,bsts.cond_desc as BADGE_STATUS";
              
                 query = query + " FROM person p, department d, category c, person_category pc,badge b, rs_company comp, rs_division div, badgests bsts ";
                 query = query + " WHERE  ";
                 query = query + " b.bid is NOT NULL AND (LEN(b.bid) = 11 OR LEN(b.bid) = 12) ";
                 query = query + " AND b.person_id is NOT NULL ";
                 query = query + " AND c.id = pc.category_id AND  p.id = pc.person_id ";
-                query = query + " AND d.id = p.department AND b.person_id = p.id AND  d.user1 Like comp.companyName AND d.user2 like div.divisionName AND bsts.id = b.status ";
+                query = query + " AND d.id = p.department AND b.person_id = p.id AND  d.user1 Like comp.companyName AND d.user2 like div.divisionName AND bsts.id = b.status AND b.unique_id IS NOT NULL AND b.unique_id <> ''";
 
                 Report_Audit.isConditionSelected = true;
 
@@ -363,7 +363,7 @@ namespace ReportingServerWebService.Models
                         report.Division = sqlreader.GetSqlValue(3).ToString().Trim();
                         report.EmpId = sqlreader.GetSqlValue(4).ToString().Trim();
                         report.Category = sqlreader.GetSqlValue(8).ToString().Trim();
-                        report.Badge = sqlreader.GetSqlValue(10).ToString().Trim().Substring(5);
+                        report.Badge = sqlreader.GetSqlValue(10).ToString().Trim();
                         report.Name = report.FirstName + " " + report.LastName;
                         report.Status = sqlreader.GetSqlValue(13).ToString().Trim();
 
