@@ -112,11 +112,17 @@ function bloodhoundInit(initialApiName, apiName) {
 
 function typeaheadInit(id, bloodhound) {
 
+    var len = 0;
+
+    if (id == 'name' || id == 'badge') {
+        len = 3;
+    }
+
     bloodhound.initialize(true);
 
     $('#' + id).typeahead({
         hint: true,
-        minLength: 0
+        minLength: len
     }, {
         name: id,
         displayKey: 'value',
@@ -322,7 +328,11 @@ function deselectHandler(id) {
             division_ = bloodhoundInit('Division', 'Division/null');
             name_ = bloodhoundInit('Name', 'Name/null/null');
             badge_ = bloodhoundInit('Badge', 'Badge/null/null');
-            wildCardId_ = bloodhoundInit('WildCard', 'WildCard');
+            if (_report == 'Report_Activity') {
+                wildCardId_ = bloodhoundInit('WildCard/1', 'WildCard/1');
+            } else {
+                wildCardId_ = bloodhoundInit('WildCard/2', 'WildCard/2');
+            }
 
             //typeaheadInit('company', company_);
             typeaheadInit('division', division_);
@@ -357,7 +367,11 @@ function deselectHandler(id) {
             //division_ = bloodhoundInit('Division/' + _company, 'Division/' + _company);
             name_ = bloodhoundInit('Name/' + _company, 'Name/' + _company);
             badge_ = bloodhoundInit('Badge/' + _company, 'Badge/' + _company);
-            wildCardId_ = bloodhoundInit('WildCard', 'WildCard');
+            if (_report == 'Report_Activity') {
+                wildCardId_ = bloodhoundInit('WildCard/1', 'WildCard/1');
+            } else {
+                wildCardId_ = bloodhoundInit('WildCard/2', 'WildCard/2');
+            }
 
             //typeaheadInit('division', division_);
             typeaheadInit('name', name_);
@@ -385,7 +399,11 @@ function deselectHandler(id) {
             $('#wildCardText').typeahead('destroy');
 
             badge_ = bloodhoundInit('Badge/' + _company + '/' + _division, 'Badge/' + _company + '/' + _division);
-            wildCardId_ = bloodhoundInit('WildCard', 'WildCard');
+            if (_report == 'Report_Activity') {
+                wildCardId_ = bloodhoundInit('WildCard/1', 'WildCard/1');
+            } else {
+                wildCardId_ = bloodhoundInit('WildCard/2', 'WildCard/2');
+            }
 
             typeaheadInit('badge', badge_);
             typeaheadInit('wildCardId', wildCardId_);
@@ -413,7 +431,11 @@ function deselectHandler(id) {
             $('#wildCardText').typeahead('destroy');
 
             name_ = bloodhoundInit('Name/' + _company + '/' + _division, 'Name/' + _company + '/' + _division);
-            wildCardId_ = bloodhoundInit('WildCard', 'WildCard');
+            if (_report == 'Report_Activity') {
+                wildCardId_ = bloodhoundInit('WildCard/1', 'WildCard/1');
+            } else {
+                wildCardId_ = bloodhoundInit('WildCard/2', 'WildCard/2');
+            }
 
             typeaheadInit('name', name_);
             typeaheadInit('wildCardId', wildCardId_);
@@ -447,7 +469,11 @@ function deselectHandler(id) {
             enableParam('badge');
             disableParam('wildCardText');
 
-            //wildCardId_ = bloodhoundInit('WildCard', 'WildCard');
+            //            if (_report == 'Report_Activity') {
+           // wildCardId_ = bloodhoundInit('WildCard/1', 'WildCard/1');
+   // } else {
+    //            wildCardId_ = bloodhoundInit('WildCard/2', 'WildCard/2');
+//}
 
             //typeaheadInit('wildCardId', wildCardId_);
 
@@ -724,7 +750,11 @@ function selectHandler(id, obj, datum) {
             name_ = bloodhoundInit('Name/' + _company + '/null', 'Name/' + _company + '/null');
 
             badge_ = bloodhoundInit('Badge/' + _company + '/null', 'Badge/' + _company + '/null');
-            wildCardId_ = bloodhoundInit('WildCard', 'WildCard');
+            if (_report == 'Report_Activity') {
+                wildCardId_ = bloodhoundInit('WildCard/1', 'WildCard/1');
+            } else {
+                wildCardId_ = bloodhoundInit('WildCard/2', 'WildCard/2');
+            }
 
             typeaheadInit('division', division_);
             typeaheadInit('name', name_);
@@ -754,7 +784,11 @@ function selectHandler(id, obj, datum) {
 
             name_ = bloodhoundInit('Name/' + _company + '/' + _division, 'Name/' + _company + '/' + _division);
             badge_ = bloodhoundInit('Badge/' + _company + '/' + _division, 'Badge/' + _company + '/' + _division);
-            wildCardId_ = bloodhoundInit('WildCard', 'WildCard');
+            if (_report == 'Report_Activity') {
+                wildCardId_ = bloodhoundInit('WildCard/1', 'WildCard/1');
+            } else {
+                wildCardId_ = bloodhoundInit('WildCard/2', 'WildCard/2');
+            }
 
             typeaheadInit('name', name_);
             typeaheadInit('badge', badge_);
@@ -994,7 +1028,12 @@ function selectHandler(id, obj, datum) {
             division_ = bloodhoundInit('Division', 'Division/null');
             name_ = bloodhoundInit('Name', 'Name/null/null');
             badge_ = bloodhoundInit('Badge', 'Badge/null/null');
-            wildCardId_ = bloodhoundInit('WildCard', 'WildCard');
+
+            if (_report == 'Report_Activity') {
+                wildCardId_ = bloodhoundInit('WildCard/1', 'WildCard/1');
+            } else {
+                wildCardId_ = bloodhoundInit('WildCard/2', 'WildCard/2');
+            }
 
             facility_ = bloodhoundInit('Facility', 'Facility');
             area_ = bloodhoundInit('Area', 'Area/null');
@@ -1624,7 +1663,15 @@ function createGrid_DoorCategory(url) {
         autowidth: true,
         height: 525,
         autoencode: true,
-        gridview: true
+        gridview: true,
+        gridComplete: function() {
+            var recs = parseInt($('#list').getGridParam('records'), 10);
+
+            if (isNaN(recs) || recs == 0) {
+                alert('No records to view.')
+
+            }
+    }
     });
 
     $('#list').jqGrid('filterToolbar', { searchOnEnter: false, defaultSearch: 'cn'});
@@ -1736,7 +1783,15 @@ function createGrid_AlarmStatus(url) {
         autowidth: true,
         height: 525,
         autoencode: true,
-        gridview: true
+        gridview: true,
+        gridComplete: function () {
+            var recs = parseInt($('#list').getGridParam('records'), 10);
+
+            if (isNaN(recs) || recs == 0) {
+                alert('No records to view.')
+
+            }
+        }
     });
     $('#list').jqGrid('filterToolbar', { searchOnEnter: false, defaultSearch: 'cn' });
     $('#list').jqGrid('navGrid', '#pager', {
@@ -1863,7 +1918,15 @@ function createGrid_BadgeStatus(url) {
         autowidth: true,
         height: 525,
         autoencode: true,
-        gridview: true
+        gridview: true,
+        gridComplete: function () {
+            var recs = parseInt($('#list').getGridParam('records'), 10);
+
+            if (isNaN(recs) || recs == 0) {
+                alert('No records to view.')
+
+            }
+        }
     });
     $('#list').jqGrid('filterToolbar', { searchOnEnter: false, defaultSearch: 'cn' });
     $('#list').jqGrid('navGrid', '#pager', {
@@ -1963,7 +2026,15 @@ function createGrid_TopSoundingAlarms(url) {
         autowidth: true,
         height: 525,
         autoencode: true,
-        gridview: true
+        gridview: true,
+        gridComplete: function () {
+            var recs = parseInt($('#list').getGridParam('records'), 10);
+
+            if (isNaN(recs) || recs == 0) {
+                alert('No records to view.')
+
+            }
+        }
     });
     $('#list').jqGrid('filterToolbar', { searchOnEnter: false, defaultSearch: 'cn' });
     $('#list').jqGrid('navGrid', '#pager', {
@@ -2092,6 +2163,14 @@ function createGrid_Audit(url) {
         height: 525,
         autoencode: true,
         gridview: true,
+        gridComplete: function () {
+            var recs = parseInt($('#list').getGridParam('records'), 10);
+
+            if (isNaN(recs) || recs == 0) {
+                alert('No records to view.')
+
+            }
+        }
     });
     $('#list').jqGrid('filterToolbar', { searchOnEnter: false, defaultSearch: 'cn' });
 
@@ -2208,7 +2287,15 @@ function createGrid_Activity(url) {
         autowidth: true,
         height: 525,
         autoencode: true,
-        gridview: true
+        gridview: true,
+        gridComplete: function () {
+            var recs = parseInt($('#list').getGridParam('records'), 10);
+
+            if (isNaN(recs) || recs == 0) {
+                alert('No records to view.')
+
+            }
+        }
     });
     $('#list').jqGrid('filterToolbar', { searchOnEnter: false, defaultSearch: 'cn' });
 

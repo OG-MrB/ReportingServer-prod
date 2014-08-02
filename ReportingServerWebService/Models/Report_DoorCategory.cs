@@ -75,7 +75,7 @@ namespace ReportingServerWebService.Models
                  }
 
                  SqlCommand command = new SqlCommand(query, conn);
-                 command.CommandTimeout = 0;
+                 command.CommandTimeout = 300;
                  List<ReportRow> rowList = new List<ReportRow>();
                  int count = 0;
                  using (sqlreader = command.ExecuteReader())

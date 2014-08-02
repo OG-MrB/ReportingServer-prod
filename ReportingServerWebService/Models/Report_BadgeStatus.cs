@@ -13,6 +13,7 @@ namespace ReportingServerWebService.Models
         public static Report_BadgeStatus badgeStatusReportReportObj;
         private static Boolean isConditionSelected = false;
         String badge;
+        String cardNo;
         String company;
         String category;
         String firstName;
@@ -27,6 +28,7 @@ namespace ReportingServerWebService.Models
         String employeeID;
         String name;
 
+        public String CardNo { get { return this.cardNo; } set { this.cardNo = value; } }
         public String Badge { get { return this.badge; } set { this.badge = value; } }
         public String Company { get { return this.company; } set { this.company = value; } }
         public String Category { get { return this.category; } set { this.category = value; } }
@@ -162,7 +164,7 @@ namespace ReportingServerWebService.Models
 
              
                 //Form the base query string
-                query = "SELECT distinct [employee],[first_name],[last_name],[user1],[user2],[BADGE_ID],[cond_desc],[ISSUE_DATETIME],[EXPIRED_DATETIME],[RETURN_DATETIME],DATENAME(dw, [EXPIRED_DATETIME]) AS DAYS FROM  [view_rs_badge_status_report]";
+                query = "SELECT [employee],[first_name],[last_name],[user1],[user2],[BADGE_ID],[cond_desc],[ISSUE_DATETIME],[EXPIRED_DATETIME],[RETURN_DATETIME],DATENAME(dw, [EXPIRED_DATETIME]) AS DAYS,[PHY_BADGE_ID] FROM  [view_rs_badge_status_report]";
                 
                 //Dynamic query creation
                 if (!stDate.Equals("null"))
@@ -264,7 +266,7 @@ namespace ReportingServerWebService.Models
                 //Set the sqlcommand 
                 command.Connection = conn;
                 command.CommandText = query;
-                command.CommandTimeout = 0;
+                command.CommandTimeout = 300;
                 //Execute and fill the object array
                 int count = 0;
                 using (sqlreader = command.ExecuteReader())
@@ -289,6 +291,7 @@ namespace ReportingServerWebService.Models
                              report.ReturnDateTime = "N/A";
 
                          report.invalidDay = sqlreader.GetSqlValue(10).ToString().Trim();
+                         report.CardNo = sqlreader.GetSqlValue(11).ToString().Trim().Substring(4);
                          report.Name = report.FirstName + " " + report.LastName;
 
                         //Fill the report row object for response

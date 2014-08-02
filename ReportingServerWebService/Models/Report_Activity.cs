@@ -495,10 +495,15 @@ namespace ReportingServerWebService.Models
                 }
                 else if (wildCardType == "5")
                 {
-                    if (Report_Activity.isConditionSelected)
+                   /* if (Report_Activity.isConditionSelected)
                         query = query + " AND dbo.person.id  = " + wildCardData;
                     else
-                        query = query + " WHERE dbo.person.id  = " + wildCardData;
+                        query = query + " WHERE dbo.person.id  = " + wildCardData; */
+
+                    if (Report_Activity.isConditionSelected)
+                        query = query + " AND [ACAMS_Import_Production_History].[dbo].[badge_history].bid  like '" + wildCardData + "'";
+                    else
+                        query = query + " WHERE [ACAMS_Import_Production_History].[dbo].[badge_history].bid  like '" + wildCardData + "'";
                     Report_Activity.isConditionSelected = true;
                 }
 
@@ -727,7 +732,7 @@ namespace ReportingServerWebService.Models
                 //Set the query string for the reporting server connection
                 command.Connection = conn;
                 command.CommandText = mainSelectStatement;
-                command.CommandTimeout = 0;
+                command.CommandTimeout = 300;
                 sqlreader = command.ExecuteReader();
 
                 DataTable myTable = new DataTable();
@@ -1156,7 +1161,7 @@ namespace ReportingServerWebService.Models
                 //Set the query string for the reporting server connection
                 command.Connection = connection;
                 command.CommandText = mainPPSelectStatement;
-                command.CommandTimeout = 0;
+                command.CommandTimeout = 300;
 
                 int count = 0;
                 using (sqlreader = command.ExecuteReader())
@@ -1409,10 +1414,16 @@ namespace ReportingServerWebService.Models
                 }
                 else if (wildCardType == "5")
                 {
-                    if (Report_Activity.isConditionSelected)
+                   /* if (Report_Activity.isConditionSelected)
                         query = query + " AND pp_person.id  = " + wildCardData;
                     else
-                        query = query + " WHERE pp_person.id  = " + wildCardData;
+                        query = query + " WHERE pp_person.id  = " + wildCardData;*/
+
+                    if (Report_Activity.isConditionSelected)
+                        query = query + " AND pp_b_hist.bid  like '" + wildCardData + "'";
+                    else
+                        query = query + " WHERE pp_b_hist.bid  like '" + wildCardData + "'";
+
                     Report_Activity.isConditionSelected = true;
                 }
 

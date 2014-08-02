@@ -20,7 +20,7 @@ namespace ReportingServerWebService.Models
             Work_Location
         };
 
-        public static List<WildCard> getWCOptions()
+        public static List<WildCard> getWCOptions(string report)
         {
             List<WildCard> lstWildCard = new List<WildCard>();
             for (int i = 1; i <= 5; i++)
@@ -32,11 +32,20 @@ namespace ReportingServerWebService.Models
                 else if (i == 2) continue;
                 //wc.value = "SSN";
                 else if (i == 3)
-                    wc.value = "Zip code";
+                    wc.value = "Zip Code";
                 else if (i == 4)
                     wc.value = "City";
                 else if (i == 5)
-                    wc.value = "Person Id";
+                {
+                    if(report=="1")
+                    {
+                        wc.value = "Card Number";
+                        lstWildCard.Add(wc);
+                    }
+                    break;
+                }
+               
+                   
                 lstWildCard.Add(wc);
             }
             return lstWildCard;
@@ -135,7 +144,8 @@ namespace ReportingServerWebService.Models
             }
             else if (type == 5)
             {
-                return Person.getAllPersonList().Cast<object>();
+                //return Person.getAllPersonList().Cast<object>();
+                return CardNo.getAllCardNosList().Cast<object>();
             }
             return new List<object>();
 
@@ -162,7 +172,8 @@ namespace ReportingServerWebService.Models
             }
             else if (type == 5)
             {
-                return Person.getEmpByCompanyList(companyId, divisionId).Cast<object>();
+                //return Person.getEmpByCompanyList(companyId, divisionId).Cast<object>();
+                return CardNo.GetCardNoByCompanyAndDivisionList(companyId, divisionId).Cast<object>();
             }
             return new List<object>();
 
@@ -189,7 +200,8 @@ namespace ReportingServerWebService.Models
             }
             else if (type == 5)
             {
-                return Person.getEmpByCompanyList(companyId, divisionId,keyStroke).Cast<object>();
+               // return Person.getEmpByCompanyList(companyId, divisionId,keyStroke).Cast<object>();
+                return CardNo.GetCardNoByCompanyAndDivisionList(companyId, divisionId,keyStroke).Cast<object>();
             }
             return new List<object>();
 

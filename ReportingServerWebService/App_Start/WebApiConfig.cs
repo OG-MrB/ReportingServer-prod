@@ -56,8 +56,8 @@ namespace ReportingServerWebService
 
             config.Routes.MapHttpRoute(
              name: "WildCard",
-             routeTemplate: "api/WildCard/{keyStroke}",
-             defaults: new { controller = "WildCard", keyStroke = RouteParameter.Optional }
+             routeTemplate: "api/WildCard/{report}/{keyStroke}",
+             defaults: new { controller = "WildCard", keyStroke = RouteParameter.Optional, report = RouteParameter.Optional }
 
          );
 
@@ -128,6 +128,11 @@ namespace ReportingServerWebService
             name: "Badge",
             routeTemplate: "api/Badge/{company}/{division}/{keyStroke}",
             defaults: new { controller = "Badge", company = RouteParameter.Optional, division = RouteParameter.Optional, keyStroke = RouteParameter.Optional });
+
+            config.Routes.MapHttpRoute(
+            name: "Card",
+            routeTemplate: "api/Card/{company}/{division}/{keyStroke}",
+            defaults: new { controller = "Card", company = RouteParameter.Optional, division = RouteParameter.Optional, keyStroke = RouteParameter.Optional });
 
             config.Routes.MapHttpRoute(
             name: "EmpId",

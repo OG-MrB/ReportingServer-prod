@@ -233,7 +233,7 @@ namespace ReportingServerWebService.Models
                 //Set the sqlcommand 
                 command.Connection = conn;
                 command.CommandText = query;
-                command.CommandTimeout = 0;
+                command.CommandTimeout = 300;
 
                 //Execute and fill the object array
                 int count = 0;
